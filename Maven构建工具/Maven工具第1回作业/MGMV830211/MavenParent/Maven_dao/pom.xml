@@ -1,0 +1,41 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.banma</groupId>
+    <artifactId>Maven_dao</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+
+
+    <name>Maven_dao</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!-- 配置 Maven 构建过程中的通用属性 -->
+
+        <!-- 编码设置为 UTF-8，保证源码文件、配置文件正确处理中文等多语言字符 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- 设置 Java 编译器版本为 1.8，指定源码版本 -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+
+        <!-- 设置目标 JVM 版本为 1.8，编译后的字节码兼容 JDK 1.8 -->
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <!-- 项目依赖列表 -->
+    <dependencies>
+        <!-- 添加 JUnit 测试框架依赖，版本为 4.12，用于单元测试 -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <!-- 表示该依赖仅在测试时使用，不会参与生产环境构建 -->
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>

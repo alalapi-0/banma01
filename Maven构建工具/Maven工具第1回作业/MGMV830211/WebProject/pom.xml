@@ -1,0 +1,96 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <!-- 指定当前 POM 使用的模型版本，Maven 约定使用 4.0.0 -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 项目的唯一标识符，通常使用公司/组织的域名反转形式 -->
+    <groupId>com.banma</groupId>
+
+    <!-- 当前模块的名称，生成的 jar/war 文件名会基于它 -->
+    <artifactId>WebProject</artifactId>
+
+    <!-- 打包类型为 WAR，适用于 Web 应用，便于部署到 Tomcat/Jetty 等服务器 -->
+    <packaging>war</packaging>
+
+    <!-- 当前版本号 -->
+    <version>1.0-SNAPSHOT</version>
+
+    <!-- 项目名称，可选字段，仅用于说明 -->
+    <name>WebProject Maven Webapp</name>
+
+    <!-- 项目主页链接，可选字段 -->
+    <url>http://maven.apache.org</url>
+
+    <!-- 配置 Maven 构建过程中的通用属性 -->
+    <properties>
+        <!-- 编码设置为 UTF-8，保证源码文件、配置文件正确处理中文等多语言字符 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- 设置 Java 编译器版本为 1.8，指定源码版本 -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+
+        <!-- 设置目标 JVM 版本为 1.8，编译后的字节码兼容 JDK 1.8 -->
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <!-- 项目依赖列表 -->
+    <dependencies>
+        <!-- 添加 JUnit 测试框架依赖，版本为 4.12，用于单元测试 -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <!-- 表示该依赖仅在测试时使用，不会参与生产环境构建 -->
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- 构建配置 -->
+    <build>
+        <!-- 最终生成的构建文件名为 WebProject.war -->
+        <finalName>WebProject</finalName>
+
+        <!-- 插件配置区域，用于扩展 Maven 功能 -->
+        <plugins>
+
+            <!-- 配置 Jetty 插件：轻量级 Web 容器，便于快速部署测试 -->
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.4.51.v20230217</version> <!-- 选一个9.x稳定版本 -->
+                <configuration>
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <webApp>
+                        <contextPath>/WebProject</contextPath>
+                    </webApp>
+                    <httpConnector>
+                        <port>9090</port>
+                    </httpConnector>
+                </configuration>
+            </plugin>
+
+            <!-- 配置 Tomcat 插件：用于将项目部署到 Tomcat 服务器上 -->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <!-- 设置 Tomcat 启动端口为 8081（默认为 8080） -->
+                    <port>8081</port>
+
+                    <!-- 设置上下文访问路径为 /WebProject，即 http://localhost:8081/WebProject -->
+                    <path>/WebProject</path>
+
+                    <!-- 设置 URI 编码为 UTF-8，解决中文乱码问题 -->
+                    <uriEncoding>UTF-8</uriEncoding>
+
+                    <!-- 指定服务器标识符，在 Maven 的 settings.xml 中配置用户名密码 -->
+                    <server>tomcat7</server>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+</project>
