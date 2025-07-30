@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+
+  <artifactId>MakeFriends</artifactId>
+
+  
+  	<parent>
+	    <groupId>com.banma</groupId>          <!-- 父工程的 groupId -->
+	    <artifactId>Parent</artifactId>                <!-- 父工程的 artifactId -->
+	    <version>0.0.1-SNAPSHOT</version>              <!-- 父工程的版本 -->
+	    
+	    <!-- 可选项：指定父项目 pom.xml 的相对路径 -->
+	    <relativePath>../Parent/pom.xml</relativePath> 
+	</parent>
+
+  <!-- 统一管理版本号 -->
+  <properties>
+    <banma.spring.version>4.1.1.RELEASE</banma.spring.version>
+  </properties>
+
+  <dependencies>
+    <!-- 单元测试依赖 -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      
+      <scope>test</scope>
+    </dependency>
+
+    <!-- HelloFriend 项目依赖 -->
+    <dependency>
+      <groupId>com.banma</groupId>
+      <artifactId>HelloFriend</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+   
+
+  </dependencies>
+
+</project>
