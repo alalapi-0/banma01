@@ -1,54 +1,62 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <html>
 <head>
-  <title>${post.title}</title>
+  <title>帖子详情</title>
   <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
 </head>
 <body>
-<div><img src="<c:url value='/assets/images/logo.png'/>" width="123" height="45"></div>
 
-<div class="h">
-  <a href="<c:url value='/'/>">论坛首页</a> |
-  <a href="<c:url value='/post/list?boardId=${param.boardId}'/>">返回列表</a>
+<div class="nav">
+  <a href="<c:url value='/'/>">首页</a> |
+  <a href="<c:url value='/post/list'/>">帖子列表</a> |
+  <a href="<c:url value='/post/new'/>">发帖</a>
 </div>
 
+<hr/>
+
 <h2>${post.title}</h2>
-<div class="gray">作者：${post.author}　时间：${post.createTime}</div>
+<div class="gray">
+  作者：${post.author}
+  &nbsp; 时间：
+  <fmt:formatDate value="${post.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
+</div>
+
 <pre style="white-space:pre-wrap;">${post.content}</pre>
 
-<!-- 仅作者可见的删帖按钮 -->
-<c:if test="${not empty user && user.id == post.userId}">
-  <form method="post" action="<c:url value='/post/delete'/>" onsubmit="return confirm('确定删除此帖？')">
-    <input type="hidden" name="id" value="${post.id}">
-    <button class="btn" type="submit">删除本帖</button>
+<!-- 仅作者本人可见的删除按钮 -->
+<c:if test="${not empty sessionScope.user and sessionScope.user.id == post.userId}">
+  <form method="get" action="<c:url value='/post/delete'/>">
+    <input type="hidden" name="id" value="${post.id}"/>
+    <input type="submit" value="删除帖子"/>
   </form>
 </c:if>
 
-<h3>回帖</h3>
+<hr/>
+
+<h3>评论</h3>
+<c:if test="${empty comments}">
+  <p class="gray">还没有评论，快来抢沙发吧！</p>
+</c:if>
 <ul>
-  <c:forEach items="${comments}" var="cmt">
+  <c:forEach items="${comments}" var="c">
     <li>
-      <b>${cmt.userName}：</b>
-      <span>${cmt.content}</span>
-      <span class="gray">（${cmt.createTime}）</span>
+      用户ID: ${c.userId} &nbsp;
+      内容：${c.content}
     </li>
   </c:forEach>
-  <c:if test="${empty comments}">
-    <li class="gray">暂无回复</li>
-  </c:if>
 </ul>
 
-<c:if test="${not empty user}">
+<!-- 登录用户才可回复 -->
+<c:if test="${not empty sessionScope.user}">
   <form method="post" action="<c:url value='/comment/add'/>">
-    <input type="hidden" name="postId" value="${post.id}">
-    <textarea name="content" rows="4" cols="80" required></textarea><br>
-    <button class="btn" type="submit">发表评论</button>
+    <input type="hidden" name="postId" value="${post.id}"/>
+    <textarea name="content" rows="4" cols="60"></textarea><br/>
+    <input type="submit" value="发表评论"/>
   </form>
 </c:if>
-<c:if test="${empty user}">
-  <a href="<c:url value='/auth/login'/>">登录后评论</a>
-</c:if>
+
 </body>
 </html>
