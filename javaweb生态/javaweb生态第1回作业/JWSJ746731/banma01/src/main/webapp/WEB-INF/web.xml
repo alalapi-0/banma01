@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                             http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+
+  <display-name>banma01</display-name>
+
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
+  <!-- 全站编码过滤器 -->
+  <filter>
+    <filter-name>EncodingFilter</filter-name>
+    <filter-class>com.banma.forum.filter.EncodingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>EncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- 首页控制器：用 /home，避免占用 / -->
+  <servlet>
+    <servlet-name>HomeServlet</servlet-name>
+    <servlet-class>com.banma.forum.controller.HomeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>HomeServlet</servlet-name>
+    <url-pattern>/home</url-pattern>
+  </servlet-mapping>
+
+  <!-- 登录/注册 -->
+  <servlet>
+    <servlet-name>AuthServlet</servlet-name>
+    <servlet-class>com.banma.forum.controller.AuthServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AuthServlet</servlet-name>
+    <url-pattern>/auth/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- 帖子相关 -->
+  <servlet>
+    <servlet-name>PostServlet</servlet-name>
+    <servlet-class>com.banma.forum.controller.PostServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PostServlet</servlet-name>
+    <url-pattern>/post/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- 评论相关 -->
+  <servlet>
+    <servlet-name>CommentServlet</servlet-name>
+    <servlet-class>com.banma.forum.controller.CommentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CommentServlet</servlet-name>
+    <url-pattern>/comment/*</url-pattern>
+  </servlet-mapping>
+
+</web-app>

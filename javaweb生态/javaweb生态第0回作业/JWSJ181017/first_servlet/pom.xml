@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.banma</groupId>
   <artifactId>first_servlet</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>first_servlet Maven Webapp</name>
-  <url>http://maven.apache.org</url>
+  <url>https://maven.apache.org</url>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -14,6 +14,16 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+
+
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>3.1.0</version>  <!-- 可替换为你使用的Tomcat版本，如 3.1.0 -->
+        <scope>provided</scope>
+      </dependency>
+
+
   </dependencies>
   <build>
     <finalName>first_servlet</finalName>
