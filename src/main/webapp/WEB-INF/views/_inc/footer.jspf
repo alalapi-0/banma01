@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!-- 不要在片段里写 page/taglib 指令 -->
 <div class="footer">
     <div class="wrap">
