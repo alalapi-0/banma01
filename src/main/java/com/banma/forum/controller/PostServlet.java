@@ -2,7 +2,7 @@ package com.banma.forum.controller;
 
 import com.banma.forum.dao.PostDao;
 import com.banma.forum.dao.ReplyDao;
-import com.banma.forum.store.MemoryStore; // 仅复用你已有的 User POJO；若你已换成 model.User，改成对应类即可
+import com.banma.forum.model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -57,7 +57,8 @@ public class PostServlet extends HttpServlet {
 
             if ("/delete".equals(path)) {
                 // 展示确认页（仅作者能看到按钮，但这里仍要校验）
-                MemoryStore.User current = (MemoryStore.User) req.getSession().getAttribute("user");
+                HttpSession session = req.getSession(false);
+                User current = session != null ? (User) session.getAttribute("user") : null;
                 if (current == null) { resp.sendRedirect(req.getContextPath()+"/auth/login"); return; }
 
                 int id = parseIntOr404(req.getParameter("id"), resp);
@@ -85,7 +86,8 @@ public class PostServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String path = req.getPathInfo();
-        MemoryStore.User current = (MemoryStore.User) req.getSession().getAttribute("user");
+        HttpSession session = req.getSession(false);
+        User current = session != null ? (User) session.getAttribute("user") : null;
         if (current == null) { resp.sendRedirect(req.getContextPath()+"/auth/login"); return; }
 
         try {

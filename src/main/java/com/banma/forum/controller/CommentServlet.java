@@ -1,22 +1,34 @@
 package com.banma.forum.controller;
 
-import com.banma.forum.store.MemoryStore;
+import com.banma.forum.dao.ReplyDao;
+import com.banma.forum.model.User;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class CommentServlet extends HttpServlet {
+    private final ReplyDao replyDao = new ReplyDao();
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        MemoryStore.User u = (MemoryStore.User) req.getSession().getAttribute("user");
+        HttpSession session = req.getSession(false);
+        User u = session != null ? (User) session.getAttribute("user") : null;
         if (u == null) { resp.sendRedirect(req.getContextPath()+"/auth/login"); return; }
         String path = req.getPathInfo(); // /add
         if ("/add".equals(path)) {
-            int postId = Integer.parseInt(req.getParameter("postId"));
-            String content = req.getParameter("content");
-            MemoryStore.addComment(postId, u.getId(), content);
-            resp.sendRedirect(req.getContextPath()+"/post/detail?id="+postId);
+            try {
+                int postId = Integer.parseInt(req.getParameter("postId"));
+                String content = req.getParameter("content");
+                replyDao.add(postId, u.getId(), content);
+                resp.sendRedirect(req.getContextPath()+"/post/detail?id="+postId);
+            } catch (NumberFormatException e) {
+                resp.sendError(400, "帖子ID不合法");
+            } catch (SQLException e) {
+                throw new ServletException(e);
+            }
         } else {
             resp.sendError(404);
         }
