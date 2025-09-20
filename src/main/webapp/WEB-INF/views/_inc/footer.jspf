@@ -1,6 +1,2 @@
-<!-- 不要在片段里写 page/taglib 指令 -->
-<div class="footer">
-    <div class="wrap">
-        2018 Tokyo Banma education Co.,Ltd 版权所有
-    </div>
-</div>
+<!-- Avoid adding page/taglib directives inside this fragment -->
+<div class="footer gray">2018 Tokyo Banma education Co.,Ltd 版权所有</div>
