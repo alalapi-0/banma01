@@ -170,6 +170,14 @@ button.btn{
 .btn:disabled,
 .btn[disabled]{ opacity:.6; cursor:not-allowed; }
 
+.btn.danger,
+button.btn.danger{
+    border-color:#a11b1b;
+    background:#d73d3d;
+}
+.btn.danger:hover{ background:#b82f2f; }
+.btn.danger:active{ background:#9f2626; }
+
 /* 高对比度用户的焦点可见性 */
 .btn:focus-visible{
     outline:2px solid var(--c-link);

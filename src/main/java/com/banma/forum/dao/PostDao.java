@@ -57,7 +57,7 @@ public class PostDao {
     /** 详情：含作者名、作者ID、板块名 */
     public Map<String,Object> findDetail(int tid) throws SQLException {
         String sql = "SELECT t.tid, t.title, t.content, t.createTime, t.uid, " +
-                "u.username AS author, b.name AS boardName, b.bid AS boardId " +
+                "u.username AS author, u.headimage AS authorAvatar, b.name AS boardName, b.bid AS boardId " +
                 "FROM tiezi t JOIN users u ON u.uid=t.uid " +
                 "JOIN bankuai b ON b.bid=t.bid WHERE t.tid=?";
         try (Connection c = DB.getConnection();
@@ -72,6 +72,8 @@ public class PostDao {
                 m.put("createTime", rs.getTimestamp("createTime"));
                 m.put("authorId", rs.getInt("uid"));
                 m.put("author", rs.getString("author"));
+                String avatar = rs.getString("authorAvatar");
+                m.put("authorAvatar", avatar != null ? avatar : "1.gif");
                 m.put("boardName", rs.getString("boardName"));
                 m.put("boardId", rs.getInt("boardId"));
                 return m;
@@ -79,9 +81,9 @@ public class PostDao {
         }
     }
 
-    /** 只有作者本人可删；外键级联会清理回复 */
+    /** 只有作者本人可删；同时清理帖子下的回复 */
     public boolean deleteByAuthor(int tid, int authorUid) throws SQLException {
-        String sql = "DELETE FROM tiezi WHERE tid=? AND uid=?";
+        String sql = "DELETE t, h FROM tiezi t LEFT JOIN huifu h ON h.tid=t.tid WHERE t.tid=? AND t.uid=?";
         try (Connection c = DB.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setInt(1, tid);

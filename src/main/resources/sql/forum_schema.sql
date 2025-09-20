@@ -72,18 +72,18 @@ CREATE TABLE `users` (
                          `username` VARCHAR(32) NOT NULL UNIQUE COMMENT '用户名',
                          `password` VARCHAR(255) NOT NULL COMMENT '密码',
                          `sex` ENUM('男','女','保密') DEFAULT '保密' COMMENT '性别',
-                         `headimage` VARCHAR(255) DEFAULT NULL COMMENT '用户头像',
+                         `headimage` VARCHAR(255) NOT NULL DEFAULT '1.gif' COMMENT '用户头像',
                          `createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
                          PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户信息表';
 
 -- 演示数据：示例用户
 INSERT INTO `users`(uid, username, password, sex, headimage, createTime) VALUES
-                                           (1,'accp','123456','保密',NULL,'2007-07-01 09:00:00'),
-                                           (2,'goodman','123456','保密',NULL,'2007-07-10 09:00:00'),
-                                           (3,'aptech','123456','保密',NULL,'2007-07-20 09:00:00'),
-                                           (4,'qq','123456','保密',NULL,'2007-09-01 09:00:00'),
-                                           (5,'class','123456','保密',NULL,'2007-07-18 09:00:00');
+                                           (1,'accp','123456','保密','1.gif','2007-07-01 09:00:00'),
+                                           (2,'goodman','123456','保密','2.gif','2007-07-10 09:00:00'),
+                                           (3,'aptech','123456','保密','3.gif','2007-07-20 09:00:00'),
+                                           (4,'qq','123456','保密','4.gif','2007-09-01 09:00:00'),
+                                           (5,'class','123456','保密','5.gif','2007-07-18 09:00:00');
 
 -- 演示数据：示例帖子（只提供标题与用户，内容使用简单文案）
 INSERT INTO `tiezi`(tid, title, content, createTime, updateTime, uid, bid) VALUES

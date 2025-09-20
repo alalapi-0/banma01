@@ -14,9 +14,9 @@
     <h3>确认删除</h3>
     <p>确定要删除帖子：<strong>${post.title}</strong> ？该操作不可恢复。</p>
     <form action="${ctx}/post/delete" method="post">
-        <input type="hidden" name="id" value="${post.tid}">
+        <input type="hidden" name="id" value="${post.id}">
         <button type="submit" class="btn danger">确认删除</button>
-        <a class="btn" href="${ctx}/post/detail?id=${post.tid}">取消</a>
+        <a class="btn" href="${ctx}/post/detail?id=${post.id}">取消</a>
     </form>
 </div>
 <%@ include file="/WEB-INF/views/_inc/footer.jsp" %>

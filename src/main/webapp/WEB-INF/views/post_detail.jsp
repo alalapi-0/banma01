@@ -32,6 +32,9 @@
             <a href="${ctx}/post/new"><img src="${ctx}/assets/images/post.gif" alt="发帖"></a>
         </c:otherwise>
     </c:choose>
+    <c:if test="${not empty sessionScope.user && sessionScope.user.id == post.authorId}">
+        <a href="${ctx}/post/delete?id=${post.id}" style="margin-left:10px;color:#c00;">删除帖子</a>
+    </c:if>
 </div>
 <div class="nav" style="text-align:right;width:960px;"> <a href="${ctx}/post/detail?id=${post.id}">上一页</a>| <a href="${ctx}/post/detail?id=${post.id}">下一页</a> </div>
 <div>
@@ -47,11 +50,12 @@
             </tbody>
         </table>
     </div>
+    <c:set var="postAvatar" value="${empty post.authorAvatar ? '1.gif' : post.authorAvatar}" />
     <div class="t">
         <table style="border-top-width:0px;table-layout:fixed" cellSpacing="0" cellPadding="0" width="100%">
             <tbody>
             <tr class="tr1">
-                <th style="width:20%"><b>${post.author}</b><br><img src="${ctx}/assets/images/1.gif" alt="头像"><br>注册:--<br></th>
+                <th style="width:20%"><b>${post.author}</b><br><img src="${ctx}/assets/images/${postAvatar}" alt="头像"><br>注册:--<br></th>
                 <th>
                     <h4>${post.title}</h4>
                     <div><pre><c:out value="${post.content}" /></pre></div>
@@ -62,15 +66,22 @@
         </table>
     </div>
     <c:forEach var="r" items="${comments}">
+        <c:set var="replyAvatar" value="${empty r.authorAvatar ? '1.gif' : r.authorAvatar}" />
         <div class="t">
             <table style="border-top-width:0px;table-layout:fixed" cellSpacing="0" cellPadding="0" width="100%">
                 <tbody>
                 <tr class="tr1">
-                    <th style="width:20%"><b>${r.author}</b><br><img src="${ctx}/assets/images/2.gif" alt="头像"><br>注册:--<br></th>
+                    <th style="width:20%"><b>${r.author}</b><br><img src="${ctx}/assets/images/${replyAvatar}" alt="头像"><br>注册:--<br></th>
                     <th>
                         <h4>re：</h4>
                         <div><pre><c:out value="${r.content}" /></pre></div>
                         <div class="tipad gray">发表：[<fmt:formatDate value="${r.createTime}" pattern="yyyy-MM-dd HH:mm" />]</div>
+                        <c:if test="${not empty sessionScope.user && sessionScope.user.id == post.authorId}">
+                            <form action="${ctx}/comment/delete" method="post" style="margin-top:8px;">
+                                <input type="hidden" name="id" value="${r.id}">
+                                <button type="submit" class="btn danger" style="padding:2px 8px;">删除回复</button>
+                            </form>
+                        </c:if>
                     </th>
                 </tr>
                 </tbody>

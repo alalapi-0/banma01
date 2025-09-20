@@ -8,6 +8,8 @@ public class User {
     private int id;
     private String username;
     private String password;
+    private String gender;
+    private String avatar;
 
     public int getId() {
         return id;
@@ -28,5 +30,21 @@ public class User {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }
