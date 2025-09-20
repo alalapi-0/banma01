@@ -5,20 +5,8 @@ import com.banma.forum.model.User;
 import java.sql.*;
 
 public class UserDao {
-    // 建议抽成常量，避免每次拼接字符串
-    private static final String URL =
-            "jdbc:mysql://127.0.0.1:3306/banma_forum"
-                    + "?useUnicode=true"
-                    + "&characterEncoding=UTF-8"     // JDBC 端用 UTF-8
-                    + "&useSSL=false"
-                    + "&serverTimezone=Asia/Shanghai"
-                    + "&allowPublicKeyRetrieval=true";
-    private static final String USER = "root";
-    private static final String PASS = "alalapi";
-
-    private Connection getConn() throws Exception {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection(URL, USER, PASS);
+    private Connection getConn() throws SQLException {
+        return DB.getConnection();
     }
 
     /** 根据用户名查找用户 */
