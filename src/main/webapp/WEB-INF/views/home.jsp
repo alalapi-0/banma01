@@ -10,7 +10,7 @@
 <body>
 
 <!-- 头部（注意：header.jspf 里不要再写 taglib 指令） -->
-<jsp:include page="/WEB-INF/views/_inc/header.jspf"/>
+<%@ include file="/WEB-INF/views/_inc/header.jspf" %>
 
 <div class="wrap">
 
@@ -175,7 +175,7 @@
 </div>
 
 <!-- 页脚 -->
-<jsp:include page="/WEB-INF/views/_inc/footer.jspf"/>
+<%@ include file="/WEB-INF/views/_inc/footer.jspf" %>
 
 </body>
 </html>

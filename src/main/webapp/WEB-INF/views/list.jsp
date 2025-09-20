@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/_inc/header.jspf"/>
+<%@ include file="/WEB-INF/views/_inc/header.jspf" %>
 
 <div class="wrap">
     <div class="board">
@@ -82,6 +82,6 @@
     </div>
 </div>
 
-<jsp:include page="/WEB-INF/views/_inc/footer.jspf"/>
+<%@ include file="/WEB-INF/views/_inc/footer.jspf" %>
 </body>
 </html>

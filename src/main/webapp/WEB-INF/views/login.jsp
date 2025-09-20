@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/_inc/header.jspf"/>
+<%@ include file="/WEB-INF/views/_inc/header.jspf" %>
 
 <div class="panel">
     <div class="hd">登录</div>
@@ -35,6 +35,6 @@
     </div>
 </div>
 
-<jsp:include page="/WEB-INF/views/_inc/footer.jspf"/>
+<%@ include file="/WEB-INF/views/_inc/footer.jspf" %>
 </body>
 </html>
