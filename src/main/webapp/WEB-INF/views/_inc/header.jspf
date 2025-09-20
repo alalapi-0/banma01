@@ -1,29 +1,17 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!-- 不要在片段里写 page/taglib 指令 -->
-<div class="topbar">
-    <div class="wrap">
-        <a class="logo" href="${ctx}/">
-            <img src="${ctx}/images/logo.png" alt="Banma School" />
-        </a>
-        <div class="userbar">
-            <c:choose>
-                <c:when test="${not empty sessionScope.user}">
-                    您好：<strong>${sessionScope.user.username}</strong> |
-                    <a href="${ctx}/auth/logout">登出</a>
-                </c:when>
-                <c:otherwise>
-                    您尚未 |
-                    <a href="${ctx}/auth/login">登录</a> |
-                    <a href="${ctx}/auth/register">注册</a>
-                </c:otherwise>
-            </c:choose>
-        </div>
-    </div>
+<div class="logo-bar">
+    <img src="${ctx}/assets/images/logo.png" width="123" height="45" alt="斑马学员论坛" />
 </div>
-<div class="breadcrumb">
-    <div class="wrap">
-        >> <a href="${ctx}/">论坛首页</a>
-        <c:if test="${not empty requestScope.breadcrumb}">
-            ${requestScope.breadcrumb}
-        </c:if>
-    </div>
+<div class="h">
+    <c:choose>
+        <c:when test="${not empty sessionScope.user}">
+            您好：<strong>${sessionScope.user.username}</strong> &nbsp;| &nbsp;
+            <a href="${ctx}/auth/logout">登出</a> |
+        </c:when>
+        <c:otherwise>
+            您尚未&nbsp;<a href="${ctx}/auth/login">登录</a> &nbsp;| &nbsp;
+            <a href="${ctx}/auth/register">注册</a> |
+        </c:otherwise>
+    </c:choose>
 </div>
