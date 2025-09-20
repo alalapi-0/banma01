@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!-- Avoid adding page/taglib directives inside this fragment -->
 <div class="logo-bar">
     <img src="${ctx}/assets/images/logo.png" width="123" height="45" alt="斑马学员论坛" />
