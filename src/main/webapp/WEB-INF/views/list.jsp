@@ -31,6 +31,13 @@
             <td style="width:10%" align="middle">回复</td>
         </tr>
         <c:choose>
+            <c:when test="${dbError}">
+                <tr class="tr3">
+                    <td colspan="4" style="text-align:center;">
+                        <span class="gray">${dbErrorMessage}</span>
+                    </td>
+                </tr>
+            </c:when>
             <c:when test="${not empty posts}">
                 <c:forEach var="p" items="${posts}">
                     <tr class="tr3">
