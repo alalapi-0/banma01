@@ -1,58 +1,59 @@
-/* 基础 */
+/* 基础样式：沿用老师提供的 JSP 示例视觉 */
 html,body{margin:0;padding:0}
 body{
-	font:14px/1.6 "Microsoft YaHei","PingFang SC",Arial,Helvetica,sans-serif;
-	color:#333;background:#fff;
+    font:12px/1.6 "宋体","Microsoft YaHei",Arial,Helvetica,sans-serif;
+    color:#333;
+    background:#fff;
 }
-a{color:#2a5db0;text-decoration:none}
+a{color:#0b55c8;text-decoration:none}
 a:hover{text-decoration:underline}
+img{border:0}
 
-.wrap{width:1000px;margin:0 auto}
+/* 顶部 */
+.logo-bar{width:960px;margin:15px auto 5px}
+.logo-bar img{display:block}
+.h{width:960px;margin:0 auto;padding:4px 0 6px;border-bottom:1px solid #cbd9f5;text-align:right;color:#333}
+.h a{color:#0b55c8;margin:0 4px}
 
-/* 顶部条 */
-.topbar{background:#e6f0fb;border-bottom:1px solid #c8d7eb}
-.topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
-.logo img{height:34px;display:block}
-.userbar{color:#3a5b8f}
+/* 主体表格容器 */
+.t{width:960px;margin:15px auto;background:#fff;border:1px solid #cbd9f5;box-shadow:0 0 0 2px #f1f6ff inset;padding:12px 10px}
+.t table{width:100%;border-collapse:collapse;background:#fff}
+.t th,.t td{padding:8px 10px;font-size:12px}
+.tr2 th,.tr2 td{background:#e2edff;font-weight:bold;color:#1b3d7a;text-align:center}
+.tr3 th,.tr3 td{background:#f8fbff;border-bottom:1px solid #e1ecff}
+.tr3 th{text-align:left;font-weight:normal}
+.tr3 td{text-align:center}
+.tr1 th,.tr1 td{background:#f8fbff;border-bottom:1px solid #e1ecff}
+.tr1 th{text-align:left;font-weight:normal;vertical-align:top}
+.tr1 td{vertical-align:top}
 
-/* 面包屑 */
-.breadcrumb{background:#f5f9ff;border-bottom:1px solid #e1ecfb}
-.breadcrumb .wrap{padding:8px 0;color:#6a829f}
+.gray{color:#808080;font-size:12px}
+.tipad{margin-top:8px;font-size:12px;color:#555}
+.tipad .gray{margin-left:6px}
 
-/* 版块表格 */
-.board{margin:16px 0;border:1px solid #cfe0f3;border-radius:4px;overflow:hidden}
-.board .hd{background:#e9f3ff;border-bottom:1px solid #cfe0f3;padding:10px 12px;color:#3f5f8a}
-.table{width:100%;border-collapse:collapse}
-.table th,.table td{border-bottom:1px solid #e9f1fb;padding:12px}
-.table th{background:#f6faff;color:#5a7aa6;font-weight:600}
-.board-icon{width:40px}
-.board-icon img{width:28px;height:28px}
+/* 输入控件 */
+.input{border:1px solid #9db7e5;padding:4px 6px;font-size:12px}
+textarea{font-size:12px}
+.btn{display:inline-block;padding:4px 18px;font-size:12px;border:1px solid #5d7ecd;background:#6f8dde;color:#fff;cursor:pointer}
+.btn:hover{background:#5876c6}
+.btn:active{background:#4f6bb4}
 
-/* 表单与按钮 */
-.form{width:860px;margin:18px auto}
-.form .row{display:flex;align-items:center;margin:10px 0}
-.form .row label{width:80px;color:#4a6699}
-.form .row input[type=text],
-.form .row input[type=password],
-.form .row textarea{
-	flex:1;padding:8px;border:1px solid #cfe0f3;border-radius:3px;outline:none
-}
-.form .row textarea{height:280px;resize:vertical}
-.actions{margin-top:10px}
-.btn{
-	display:inline-block;min-width:72px;text-align:center;padding:7px 14px;border-radius:3px;
-	border:1px solid #2f6ab1;background:#3d7bd3;color:#fff;cursor:pointer
-}
-.btn.secondary{background:#f8fbff;color:#2f6ab1;border-color:#bcd3ef}
-.tip{color:#8aa3c4;font-size:12px}
+/* 导航与其他块 */
+.nav,.breadcrumb{width:960px;margin:10px auto;font-size:12px;color:#1b3d7a}
+.nav a,.breadcrumb a{color:#0b55c8}
+.list-actions{width:960px;margin:8px auto;font-size:0}
+.list-actions a{display:inline-block;margin-right:8px}
+.notice{width:960px;margin:8px auto;color:#c00;font-size:12px}
 
-/* 登录/注册 */
-.panel{width:680px;margin:18px auto;border:1px solid #cfe0f3;border-radius:4px}
-.panel .hd{background:#f6faff;padding:10px 12px;border-bottom:1px solid #cfe0f3;color:#3f5f8a}
-.panel .bd{padding:18px}
+/* 回复表单 */
+.reply-form{width:960px;margin:15px auto}
+.reply-form textarea{width:600px;height:120px;border:1px solid #9db7e5;padding:6px;resize:vertical}
+.reply-form .btn{margin-top:8px}
 
 /* 头像选择 */
-.avatars{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:8px}
-.avatar{display:flex;align-items:center;gap:6px}
-.avatar img{width:54px;height:54px;border:1px solid #d9e8f9;border-radius:4px;background:#fff}
-.footer{margin:30px 0 40px;text-align:center;color:#7d97ba}
+.avatar-list{display:flex;flex-wrap:wrap;gap:6px 18px;margin:6px 0}
+.avatar-option{display:inline-flex;align-items:center;gap:4px;font-size:12px}
+.avatar-option img{width:48px;height:48px;border:1px solid #cbd9f5;background:#fff}
+
+/* 页脚 */
+.footer{width:960px;margin:30px auto 40px;text-align:center;font-size:12px;color:#666}

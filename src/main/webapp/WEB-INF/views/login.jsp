@@ -1,41 +1,39 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
-
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>登录 - 斑马教育 论坛</title>
-    <link rel="stylesheet" href="${ctx}/style.css">
+    <title>斑马学员论坛--登录</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="${ctx}/assets/css/style.css">
+    <script type="text/javascript">
+        function check() {
+            if (document.loginForm.username.value === "") {
+                alert("用户名不能为空");
+                return false;
+            }
+            if (document.loginForm.password.value === "") {
+                alert("密码不能为空");
+                return false;
+            }
+            return true;
+        }
+    </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/_inc/header.jspf"/>
-
-<div class="panel">
-    <div class="hd">登录</div>
-    <div class="bd">
-        <form class="form" method="post" action="${ctx}/auth/login">
-            <c:if test="${not empty requestScope.msg}">
-                <div class="tip" style="margin:4px 0 12px;color:#c00;">${msg}</div>
-            </c:if>
-
-            <div class="row">
-                <label>用户名</label>
-                <input type="text" name="username" value="${param.username}" required>
-            </div>
-            <div class="row">
-                <label>密 码</label>
-                <input type="password" name="password" required>
-            </div>
-            <div class="actions">
-                <button class="btn" type="submit">登录</button>
-                <a class="btn secondary" href="${ctx}/auth/register">去注册</a>
-            </div>
-        </form>
-    </div>
+<div class="nav">&gt;&gt;<b><a href="${ctx}/">论坛首页</a></b></div>
+<c:if test="${not empty msg}">
+    <div class="notice">${msg}</div>
+</c:if>
+<div class="t" align="center" style="margin-top:15px;">
+    <form name="loginForm" method="post" action="${ctx}/auth/login" onsubmit="return check();">
+        <br>用户名 &nbsp;<input class="input" tabindex="1" maxlength="20" size="35" type="text" name="username" value="${param.username}"> <br>
+        密　码 &nbsp;<input class="input" tabindex="2" maxlength="20" size="40" type="password" name="password"> <br>
+        <input class="btn" tabindex="6" value="登 录" type="submit">
+    </form>
 </div>
-
 <jsp:include page="/WEB-INF/views/_inc/footer.jspf"/>
 </body>
 </html>
