@@ -22,7 +22,7 @@
     </script>
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/_inc/header.jspf"/>
+<%@ include file="/WEB-INF/views/_inc/header.jspf" %>
 <div class="nav">&gt;&gt;<b><a href="${ctx}/">论坛首页</a></b></div>
 <c:if test="${not empty msg}">
     <div class="notice">${msg}</div>
@@ -34,6 +34,6 @@
         <input class="btn" tabindex="6" value="登 录" type="submit">
     </form>
 </div>
-<jsp:include page="/WEB-INF/views/_inc/footer.jspf"/>
+<%@ include file="/WEB-INF/views/_inc/footer.jspf" %>
 </body>
 </html>
