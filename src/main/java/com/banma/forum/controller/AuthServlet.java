@@ -1,17 +1,23 @@
 package com.banma.forum.controller;
 
-import com.banma.forum.store.MemoryStore;
+import com.banma.forum.dao.UserDao;
+import com.banma.forum.model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
 
+/**
+ * AuthServlet：处理登录/注册/登出
+ * URL 映射：/auth/*
+ */
 public class AuthServlet extends HttpServlet {
+    private UserDao userDao = new UserDao();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        String path = req.getPathInfo(); // 可能是 null、/login、/register、/logout
+        String path = req.getPathInfo();
         if (path == null || "/login".equals(path)) {
             req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
         } else if ("/register".equals(path)) {
@@ -19,8 +25,7 @@ public class AuthServlet extends HttpServlet {
         } else if ("/logout".equals(path)) {
             HttpSession s = req.getSession(false);
             if (s != null) s.invalidate();
-            // 退出后回首页
-            resp.sendRedirect(req.getContextPath() + "/home");
+            resp.sendRedirect(req.getContextPath() + "/");
         } else {
             resp.sendError(404);
         }
@@ -29,33 +34,36 @@ public class AuthServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        String action = req.getPathInfo(); // /login 或 /register
-        if ("/login".equals(action)) {
-            String u = req.getParameter("username");
-            String p = req.getParameter("password");
-            MemoryStore.User user = MemoryStore.findUser(u);
-            if (user != null && p != null && p.equals(user.getPassword())) {
+        String action = req.getPathInfo();
+        try {
+            if ("/login".equals(action)) {
+                String u = req.getParameter("username");
+                String p = req.getParameter("password");
+                User user = userDao.findByName(u);
+                if (user != null && user.getPassword().equals(p)) {
+                    req.getSession(true).setAttribute("user", user);
+                    resp.sendRedirect(req.getContextPath() + "/");
+                } else {
+                    req.setAttribute("msg", "登录失败：用户名或密码不正确");
+                    req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
+                }
+            } else if ("/register".equals(action)) {
+                String u = req.getParameter("username");
+                String p = req.getParameter("password");
+                User exist = userDao.findByName(u);
+                if (exist != null) {
+                    req.setAttribute("msg", "用户名已存在");
+                    req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
+                    return;
+                }
+                User user = userDao.createUser(u, p);
                 req.getSession(true).setAttribute("user", user);
-                // 登录成功 → 跳转到 /home
-                resp.sendRedirect(req.getContextPath() + "/home");
+                resp.sendRedirect(req.getContextPath() + "/");
             } else {
-                req.setAttribute("msg", "登录失败：用户名或密码不正确");
-                req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
+                resp.sendError(404);
             }
-        } else if ("/register".equals(action)) {
-            String u = req.getParameter("username");
-            String p = req.getParameter("password");
-            MemoryStore.User user = MemoryStore.createUser(u, p);
-            if (user == null) {
-                req.setAttribute("msg", "用户名已存在");
-                req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
-                return;
-            }
-            req.getSession(true).setAttribute("user", user);
-            // 注册成功 → 跳转到 /home
-            resp.sendRedirect(req.getContextPath() + "/home");
-        } else {
-            resp.sendError(404);
+        } catch (Exception e) {
+            throw new ServletException(e);
         }
     }
 }

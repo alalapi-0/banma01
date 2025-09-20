@@ -1,85 +1,58 @@
-/* 全局文本与链接 */
-body { font-size: 12px; }
-a { color: #2f5fa1; text-decoration: none; }
-a:hover { text-decoration: underline; }
+/* 基础 */
+html,body{margin:0;padding:0}
+body{
+	font:14px/1.6 "Microsoft YaHei","PingFang SC",Arial,Helvetica,sans-serif;
+	color:#333;background:#fff;
+}
+a{color:#2a5db0;text-decoration:none}
+a:hover{text-decoration:underline}
 
-/* 表单 */
-textarea { border: 1px solid #a6cbe7; }
-.input {
-	border: 1px solid #a6cbe7;
-	padding: 2px 1px;
-	font-size: 1em;
-	vertical-align: middle;
-}
-.btn {
-	border: 1px solid #2c59aa;
-	padding: 2px 2px;
-	font-size: 12px;
-	color: #000;
-	cursor: pointer;                  /* ← 标准写法，替代 cursor: hand */
-	background: linear-gradient(#fff, #c3daf5); /* ← 替代 IE 的 FILTER 渐变 */
-}
+.wrap{width:1000px;margin:0 auto}
 
-/* 框架与表格 */
-.t {
-	border: 1px solid #a6cbe7;
-	margin: 0 auto 8px;
-}
-.t table {
-	border: 1px solid #fff;
-	margin: 0 auto;
-	width: 99.98%;
-}
+/* 顶部条 */
+.topbar{background:#e6f0fb;border-bottom:1px solid #c8d7eb}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo img{height:34px;display:block}
+.userbar{color:#3a5b8f}
 
-/* 页头条 */
-.h {
-	border-bottom: 4px solid #dbecf4;
-	text-align: left;
-	padding: 5px 7px 3px 7px; /* top right bottom left */
-	background: #e0f0f9;
-	color: #004c7d;
-}
+/* 面包屑 */
+.breadcrumb{background:#f5f9ff;border-bottom:1px solid #e1ecfb}
+.breadcrumb .wrap{padding:8px 0;color:#6a829f}
 
-/* 行样式 */
-.tr1 th {
-	text-align: left;
-	padding: 5px 10px;
-	vertical-align: top;
-	font-weight: normal;
-	border-right: 1px solid #d4eff7;
-}
-.tr1 td {
-	border: 1px solid #d4eff7;
-	border-left-width: 0;
-}
+/* 版块表格 */
+.board{margin:16px 0;border:1px solid #cfe0f3;border-radius:4px;overflow:hidden}
+.board .hd{background:#e9f3ff;border-bottom:1px solid #cfe0f3;padding:10px 12px;color:#3f5f8a}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border-bottom:1px solid #e9f1fb;padding:12px}
+.table th{background:#f6faff;color:#5a7aa6;font-weight:600}
+.board-icon{width:40px}
+.board-icon img{width:28px;height:28px}
 
-.tr2 { background: #f3f8ef; color: #659b28; }
-.tr2 td,
-.tr2 th {
-	border-top: 1px solid #a6cbe7;
-	border-bottom: 1px solid #daebcd;
-	line-height: 21px;
-	padding: 0 6px;
+/* 表单与按钮 */
+.form{width:860px;margin:18px auto}
+.form .row{display:flex;align-items:center;margin:10px 0}
+.form .row label{width:80px;color:#4a6699}
+.form .row input[type=text],
+.form .row input[type=password],
+.form .row textarea{
+	flex:1;padding:8px;border:1px solid #cfe0f3;border-radius:3px;outline:none
 }
-.tr2 a { margin: 2px; color: #659b28; }
+.form .row textarea{height:280px;resize:vertical}
+.actions{margin-top:10px}
+.btn{
+	display:inline-block;min-width:72px;text-align:center;padding:7px 14px;border-radius:3px;
+	border:1px solid #2f6ab1;background:#3d7bd3;color:#fff;cursor:pointer
+}
+.btn.secondary{background:#f8fbff;color:#2f6ab1;border-color:#bcd3ef}
+.tip{color:#8aa3c4;font-size:12px}
 
-.tr3 td {
-	border-bottom: 1px solid #d4eff7;
-	border-right: 1px solid #d4eff7;
-	padding: 5px 8px;
-}
-.tr3 th {
-	border-bottom: 1px solid #d4eff7;
-	text-align: left;
-	padding: 5px 8px;
-	font-weight: normal;
-	border-right: 1px solid #d4eff7;
-}
+/* 登录/注册 */
+.panel{width:680px;margin:18px auto;border:1px solid #cfe0f3;border-radius:4px}
+.panel .hd{background:#f6faff;padding:10px 12px;border-bottom:1px solid #cfe0f3;color:#3f5f8a}
+.panel .bd{padding:18px}
 
-/* 辅助样式 */
-.gray { color: #818a89; }
-.tipad {
-	border-top: 1px solid #d4eff7;
-	margin: 10px 0 0;
-	padding-top: 5px;
-}
+/* 头像选择 */
+.avatars{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:8px}
+.avatar{display:flex;align-items:center;gap:6px}
+.avatar img{width:54px;height:54px;border:1px solid #d9e8f9;border-radius:4px;background:#fff}
+.footer{margin:30px 0 40px;text-align:center;color:#7d97ba}

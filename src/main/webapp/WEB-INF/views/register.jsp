@@ -1,48 +1,59 @@
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>斑马学员论坛--注册</title>
-    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
-    <script>
-        function checkRegister() {
-            var f = document.forms['regForm'];
-            if (!f.username.value) { alert('用户名不能为空'); return false; }
-            if (!f.password.value) { alert('密码不能为空'); return false; }
-            // 如需确认密码：if (f.password.value !== f.confirm.value) { alert('两次密码不一致'); return false; }
-            return true;
-        }
-    </script>
+    <meta charset="UTF-8">
+    <title>注册 - 斑马教育 论坛</title>
+    <link rel="stylesheet" href="${ctx}/style.css">
 </head>
 <body>
-<div><img src="<c:url value='/assets/images/logo.png'/>" width="123" height="45"></div>
+<jsp:include page="/WEB-INF/views/_inc/header.jspf"/>
 
-<div class="h">
-    您尚未　
-    <a href="<c:url value='/auth/login'/>">登录</a> &nbsp;|&nbsp;
-    <a href="<c:url value='/auth/register'/>">注册</a> |
-    <c:out value="JSTL OK"/>
+<div class="panel">
+    <div class="hd">注册</div>
+    <div class="bd">
+        <form class="form" method="post" action="${ctx}/auth/register">
+            <div class="row">
+                <label>用户名</label>
+                <input type="text" name="username" required>
+            </div>
+            <div class="row">
+                <label>密 码</label>
+                <input type="password" name="password" required>
+            </div>
+            <div class="row">
+                <label>重复密码</label>
+                <input type="password" name="repassword" required>
+            </div>
+            <div class="row">
+                <label>性 别</label>
+                <label style="margin-right:12px;"><input type="radio" name="sex" value="女"> 女</label>
+                <label style="margin-right:12px;"><input type="radio" name="sex" value="男"> 男</label>
+                <label><input type="radio" name="sex" value="保密" checked> 保密</label>
+            </div>
 
+            <div class="row" style="align-items:flex-start;">
+                <label>选择头像</label>
+                <div class="avatars">
+                    <c:forEach var="i" begin="1" end="12">
+                        <label class="avatar">
+                            <input type="radio" name="headimage" value="/images/avatars/${i}.gif" <c:if test="${i==1}">checked</c:if> />
+                            <img src="${ctx}/images/avatars/${i}.gif" alt="头像${i}">
+                        </label>
+                    </c:forEach>
+                </div>
+            </div>
+
+            <div class="actions" style="margin-left:80px;">
+                <button class="btn" type="submit">注册</button>
+            </div>
+        </form>
+    </div>
 </div>
-<br>
 
-<div>&gt;&gt;<b><a href="<c:url value='/'/>">论坛首页</a></b></div>
-
-<div class="t" align="center" style="margin-top:15px">
-    <form name="regForm" method="post" action="<c:url value='/auth/register'/>" onsubmit="return checkRegister()">
-        <br> 用户名 &nbsp;
-        <input class="input" tabindex="1" maxlength="20" size="35" type="text" name="username">
-        <br> 密　码 &nbsp;
-        <input class="input" tabindex="2" maxlength="20" size="40" type="password" name="password">
-        <!-- 如果老师素材有性别/头像等字段，也可在此加对应 input，后端按需读取 -->
-        <br>
-        <input class="btn" tabindex="6" value="注 册" type="submit">
-    </form>
-</div>
-
-<br>
-<center class="gray">2018 Tokyo Banma education Co.,Ltd 版权所有</center>
+<jsp:include page="/WEB-INF/views/_inc/footer.jspf"/>
 </body>
 </html>
