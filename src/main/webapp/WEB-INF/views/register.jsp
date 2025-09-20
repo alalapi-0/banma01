@@ -1,13 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>注册 - 斑马教育 论坛</title>
-    <link rel="stylesheet" href="${ctx}/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/_inc/header.jspf"/>
@@ -15,7 +14,10 @@
 <div class="panel">
     <div class="hd">注册</div>
     <div class="bd">
-        <form class="form" method="post" action="${ctx}/auth/register">
+        <form class="form" method="post" action="${pageContext.request.contextPath}/auth/register">
+            <c:if test="${not empty requestScope.msg}">
+                <div class="tip" style="margin:4px 0 12px;color:#c00;"><c:out value="${msg}"/></div>
+            </c:if>
             <div class="row">
                 <label>用户名</label>
                 <input type="text" name="username" required>
@@ -38,10 +40,10 @@
             <div class="row" style="align-items:flex-start;">
                 <label>选择头像</label>
                 <div class="avatars">
-                    <c:forEach var="i" begin="1" end="12">
+                    <c:forEach var="i" begin="1" end="15">
                         <label class="avatar">
-                            <input type="radio" name="headimage" value="/images/avatars/${i}.gif" <c:if test="${i==1}">checked</c:if> />
-                            <img src="${ctx}/images/avatars/${i}.gif" alt="头像${i}">
+                            <input type="radio" name="headimage" value="/assets/images/${i}.gif" <c:if test="${i==1}">checked</c:if> />
+                            <img src="${pageContext.request.contextPath}/assets/images/${i}.gif" alt="头像${i}">
                         </label>
                     </c:forEach>
                 </div>

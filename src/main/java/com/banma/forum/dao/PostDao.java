@@ -53,9 +53,36 @@ public class PostDao {
         return res;
     }
 
+    /** 根据板块列出帖子 */
+    public List<Map<String,Object>> listByBoard(int bid, int offset, int pageSize) throws SQLException {
+        String sql = "SELECT t.tid, t.title, t.createTime, u.username AS author, " +
+                "(SELECT COUNT(*) FROM huifu h WHERE h.tid=t.tid) AS replyCount " +
+                "FROM tiezi t JOIN users u ON u.uid=t.uid " +
+                "WHERE t.bid=? ORDER BY t.createTime DESC LIMIT ?,?";
+        List<Map<String,Object>> res = new ArrayList<>();
+        try (Connection c = DB.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, bid);
+            ps.setInt(2, offset);
+            ps.setInt(3, pageSize);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Map<String,Object> m = new HashMap<>();
+                    m.put("id", rs.getInt("tid"));
+                    m.put("title", rs.getString("title"));
+                    m.put("createTime", rs.getTimestamp("createTime"));
+                    m.put("author", rs.getString("author"));
+                    m.put("replyCount", rs.getInt("replyCount"));
+                    res.add(m);
+                }
+            }
+        }
+        return res;
+    }
+
     /** 详情：含作者名、作者ID、板块名 */
     public Map<String,Object> findDetail(int tid) throws SQLException {
-        String sql = "SELECT t.tid, t.title, t.content, t.createTime, t.uid, " +
+        String sql = "SELECT t.tid, t.title, t.content, t.createTime, t.uid, t.bid, " +
                 "u.username AS author, b.name AS boardName " +
                 "FROM tiezi t JOIN users u ON u.uid=t.uid " +
                 "JOIN bankuai b ON b.bid=t.bid WHERE t.tid=?";
@@ -71,6 +98,7 @@ public class PostDao {
                 m.put("createTime", rs.getTimestamp("createTime"));
                 m.put("authorId", rs.getInt("uid"));
                 m.put("author", rs.getString("author"));
+                m.put("boardId", rs.getInt("bid"));
                 m.put("boardName", rs.getString("boardName"));
                 return m;
             }
