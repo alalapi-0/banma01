@@ -77,6 +77,11 @@ public class PostServlet extends HttpServlet {
 
             resp.sendError(404);
         } catch (SQLException e) {
+            if (isConnectionFailure(e)) {
+                log("数据库连接失败", e);
+                handleDatabaseFailure(req, resp, path);
+                return;
+            }
             throw new ServletException(e);
         }
     }
@@ -120,6 +125,11 @@ public class PostServlet extends HttpServlet {
 
             resp.sendError(404);
         } catch (SQLException e) {
+            if (isConnectionFailure(e)) {
+                log("数据库连接失败", e);
+                handleDatabaseFailure(req, resp, path);
+                return;
+            }
             throw new ServletException(e);
         }
     }
@@ -134,4 +144,36 @@ public class PostServlet extends HttpServlet {
     }
     private boolean isEmpty(String s){ return s==null || s.trim().isEmpty(); }
     private String trim(String s){ return s==null? null : s.trim(); }
+
+    private void handleDatabaseFailure(HttpServletRequest req, HttpServletResponse resp, String path)
+            throws ServletException, IOException {
+        req.setAttribute("dbError", true);
+        req.setAttribute("dbErrorMessage", "暂时无法连接数据库，请稍后再试。");
+
+        if ("/create".equals(path)) {
+            req.setAttribute("msg", req.getAttribute("dbErrorMessage"));
+            req.getRequestDispatcher("/WEB-INF/views/post.jsp").forward(req, resp);
+            return;
+        }
+
+        if (path == null || "/".equals(path) || "/list".equals(path)) {
+            req.getRequestDispatcher("/WEB-INF/views/list.jsp").forward(req, resp);
+            return;
+        }
+
+        resp.sendError(503, "数据库暂时不可用，请稍后再试。");
+    }
+
+    private boolean isConnectionFailure(Throwable t) {
+        while (t != null) {
+            if (t instanceof java.net.ConnectException) return true;
+            if (t instanceof java.sql.SQLNonTransientConnectionException) return true;
+            String name = t.getClass().getName();
+            if (name.contains("CommunicationsException") || name.contains("ConnectionException")) {
+                return true;
+            }
+            t = t.getCause();
+        }
+        return false;
+    }
 }
