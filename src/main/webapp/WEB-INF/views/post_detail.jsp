@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
+<c:set var="boardId" value="${post.boardId}" />
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
 <html>
 <head>
@@ -11,10 +12,26 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/views/_inc/header.jsp" %>
-<div class="nav">&gt;&gt;<b><a href="${ctx}/">论坛首页</a></b>&gt;&gt; <b>${post.boardName}</b></div>
+<div class="nav">&gt;&gt;<b><a href="${ctx}/">论坛首页</a></b>&gt;&gt;
+    <c:choose>
+        <c:when test="${not empty boardId}">
+            <b><a href="${ctx}/post/list?bid=${boardId}">${post.boardName}</a></b>
+        </c:when>
+        <c:otherwise>
+            <b>${post.boardName}</b>
+        </c:otherwise>
+    </c:choose>
+</div>
 <div class="list-actions">
     <a href="#reply-form"><img src="${ctx}/assets/images/reply.gif" alt="回复"></a>
-    <a href="${ctx}/post/new"><img src="${ctx}/assets/images/post.gif" alt="发帖"></a>
+    <c:choose>
+        <c:when test="${not empty boardId}">
+            <a href="${ctx}/post/new?bid=${boardId}"><img src="${ctx}/assets/images/post.gif" alt="发帖"></a>
+        </c:when>
+        <c:otherwise>
+            <a href="${ctx}/post/new"><img src="${ctx}/assets/images/post.gif" alt="发帖"></a>
+        </c:otherwise>
+    </c:choose>
 </div>
 <div class="nav" style="text-align:right;width:960px;"> <a href="${ctx}/post/detail?id=${post.id}">上一页</a>| <a href="${ctx}/post/detail?id=${post.id}">下一页</a> </div>
 <div>
