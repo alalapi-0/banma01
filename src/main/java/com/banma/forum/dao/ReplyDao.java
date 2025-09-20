@@ -8,7 +8,7 @@ public class ReplyDao {
 
     /** 获取某帖的所有回复（含作者与作者ID） */
     public List<Map<String,Object>> listByPost(int tid) throws SQLException {
-        String sql = "SELECT h.hid, h.content, h.createTime, u.username AS author, h.uid " +
+        String sql = "SELECT h.hid, h.content, h.createTime, u.username AS author, h.uid, u.headimage " +
                 "FROM huifu h JOIN users u ON u.uid=h.uid " +
                 "WHERE h.tid=? ORDER BY h.createTime ASC";
         List<Map<String,Object>> list = new ArrayList<>();
@@ -23,6 +23,8 @@ public class ReplyDao {
                     m.put("createTime", rs.getTimestamp("createTime"));
                     m.put("author", rs.getString("author"));
                     m.put("authorId", rs.getInt("uid"));
+                    String avatar = rs.getString("headimage");
+                    m.put("authorAvatar", avatar != null ? avatar : "1.gif");
                     list.add(m);
                 }
             }
@@ -42,6 +44,30 @@ public class ReplyDao {
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 return rs.next()? rs.getInt(1):0;
             }
+        }
+    }
+
+    public Integer findPostId(int replyId) throws SQLException {
+        String sql = "SELECT tid FROM huifu WHERE hid=?";
+        try (Connection c = DB.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, replyId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("tid");
+                }
+                return null;
+            }
+        }
+    }
+
+    public boolean deleteByPostOwner(int replyId, int ownerUid) throws SQLException {
+        String sql = "DELETE h FROM huifu h JOIN tiezi t ON t.tid=h.tid WHERE h.hid=? AND t.uid=?";
+        try (Connection c = DB.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, replyId);
+            ps.setInt(2, ownerUid);
+            return ps.executeUpdate() > 0;
         }
     }
 }

@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
+<c:set var="board" value="${requestScope.board}" />
+<c:set var="boardId" value="${not empty board ? board.id : requestScope.boardId}" />
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
 <html>
 <head>
@@ -11,13 +13,42 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/views/_inc/header.jsp" %>
-<div class="nav">&gt;&gt;<b><a href="${ctx}/">论坛首页</a></b>&gt;&gt; <b>帖子列表</b></div>
+<div class="nav">
+    &gt;&gt;<b><a href="${ctx}/">论坛首页</a></b>
+    <c:choose>
+        <c:when test="${not empty board}">
+            <c:if test="${not empty board.parentName}">
+                &gt;&gt; <b>${board.parentName}</b>
+            </c:if>
+            &gt;&gt; <b>${board.name}</b>
+        </c:when>
+        <c:otherwise>
+            &gt;&gt; <b>帖子列表</b>
+        </c:otherwise>
+    </c:choose>
+</div>
 <div class="list-actions">
     <c:if test="${not empty sessionScope.user}">
-        <a href="${ctx}/post/new"><img src="${ctx}/assets/images/post.gif" alt="发表帖子"></a>
+        <c:choose>
+            <c:when test="${not empty boardId}">
+                <a href="${ctx}/post/new?bid=${boardId}"><img src="${ctx}/assets/images/post.gif" alt="发表帖子"></a>
+            </c:when>
+            <c:otherwise>
+                <a href="${ctx}/post/new"><img src="${ctx}/assets/images/post.gif" alt="发表帖子"></a>
+            </c:otherwise>
+        </c:choose>
     </c:if>
 </div>
-<div class="nav" style="text-align:right;width:960px;"> <a href="${ctx}/post/list">上一页</a>| <a href="${ctx}/post/list">下一页</a> </div>
+<div class="nav" style="text-align:right;width:960px;">
+    <c:choose>
+        <c:when test="${not empty boardId}">
+            <a href="${ctx}/post/list?bid=${boardId}">上一页</a>| <a href="${ctx}/post/list?bid=${boardId}">下一页</a>
+        </c:when>
+        <c:otherwise>
+            <a href="${ctx}/post/list">上一页</a>| <a href="${ctx}/post/list">下一页</a>
+        </c:otherwise>
+    </c:choose>
+</div>
 <div class="t">
     <table cellSpacing="0" cellPadding="0" width="100%">
         <tbody>
@@ -53,124 +84,9 @@
             </c:when>
             <c:otherwise>
                 <tr class="tr3">
-                    <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
-                    <td style="font-size:15px"><a href="${ctx}/post/detail?id=100">c#是微软开发的语言 </a></td>
-                    <td align="middle">accp</td>
-                    <td align="middle">0</td>
-                </tr>
-                <tr class="tr3">
-                    <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
-                    <td style="font-size:15px"><a href="${ctx}/post/detail?id=99">c#是微软开发的语言 </a></td>
-                    <td align="middle">goodman</td>
-                    <td align="middle">0</td>
-                </tr>
-                <tr class="tr3">
-                    <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
-                    <td style="font-size:15px"><a href="${ctx}/post/detail?id=98">c#是一门很好的语言</a> </td>
-                    <td align="middle">goodman</td>
-                    <td align="middle">0</td>
-                </tr>
-                <tr class="tr3">
-                    <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
-                    <td style="font-size:15px"><a href="${ctx}/post/detail?id=95">大家不好</a> </td>
-                    <td align="middle">goodman</td>
-                    <td align="middle">0</td>
-                </tr>
-                <tr class="tr3">
-                    <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
-                    <td style="font-size:15px"><a href="${ctx}/post/detail?id=92">JSP论坛测试</a> </td>
-                    <td align="middle">class</td>
-                    <td align="middle">1</td>
-                </tr>
-                <tr class="tr3">
-                    <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
-                    <td style="font-size:15px"><a href="${ctx}/post/detail?id=91">JSP论坛测试</a> </td>
-                    <td align="middle">accp</td>
-                    <td align="middle">0</td>
-                </tr>
-                <tr class="tr3">
-                    <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
-                    <td style="font-size:15px"><a href="${ctx}/post/detail?id=82">C#语言 问题集锦3</a> </td>
-                    <td align="middle">goodman</td>
-                    <td align="middle">12</td>
-                </tr>
-                <tr class="tr3">
-                    <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
-                    <td style="font-size:15px"><a href="${ctx}/post/detail?id=81">C#语言 问题集锦2</a> </td>
-                    <td align="middle">goodman</td>
-                    <td align="middle">11</td>
-                </tr>
-                <tr class="tr3">
-                    <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
-                    <td style="font-size:15px"><a href="${ctx}/post/detail?id=80">C#语言 问题集锦1</a> </td>
-                    <td align="middle">goodman</td>
-                    <td align="middle">0</td>
-                </tr>
-                <tr class="tr3">
-                    <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
-                    <td style="font-size:15px"><a href="${ctx}/post/detail?id=33">C#语言测试帖15</a> </td>
-                    <td align="middle">goodman</td>
-                    <td align="middle">3</td>
-                </tr>
-                <tr class="tr3">
-                    <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
-                    <td style="font-size:15px"><a href="${ctx}/post/detail?id=32">C#语言测试帖14</a> </td>
-                    <td align="middle">goodman</td>
-                    <td align="middle">0</td>
-                </tr>
-                <tr class="tr3">
-                    <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
-                    <td style="font-size:15px"><a href="${ctx}/post/detail?id=31">C#语言测试帖13</a> </td>
-                    <td align="middle">goodman</td>
-                    <td align="middle">0</td>
-                </tr>
-                <tr class="tr3">
-                    <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
-                    <td style="font-size:15px"><a href="${ctx}/post/detail?id=30">C#语言测试帖12</a> </td>
-                    <td align="middle">goodman</td>
-                    <td align="middle">0</td>
-                </tr>
-                <tr class="tr3">
-                    <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
-                    <td style="font-size:15px"><a href="${ctx}/post/detail?id=29">C#语言测试帖11</a> </td>
-                    <td align="middle">goodman</td>
-                    <td align="middle">0</td>
-                </tr>
-                <tr class="tr3">
-                    <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
-                    <td style="font-size:15px"><a href="${ctx}/post/detail?id=28">C#语言测试帖10</a> </td>
-                    <td align="middle">goodman</td>
-                    <td align="middle">0</td>
-                </tr>
-                <tr class="tr3">
-                    <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
-                    <td style="font-size:15px"><a href="${ctx}/post/detail?id=27">C#语言测试帖9</a> </td>
-                    <td align="middle">goodman</td>
-                    <td align="middle">0</td>
-                </tr>
-                <tr class="tr3">
-                    <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
-                    <td style="font-size:15px"><a href="${ctx}/post/detail?id=26">C#语言测试帖8</a> </td>
-                    <td align="middle">goodman</td>
-                    <td align="middle">0</td>
-                </tr>
-                <tr class="tr3">
-                    <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
-                    <td style="font-size:15px"><a href="${ctx}/post/detail?id=25">C#语言测试帖7</a> </td>
-                    <td align="middle">goodman</td>
-                    <td align="middle">0</td>
-                </tr>
-                <tr class="tr3">
-                    <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
-                    <td style="font-size:15px"><a href="${ctx}/post/detail?id=24">C#语言测试帖6</a> </td>
-                    <td align="middle">goodman</td>
-                    <td align="middle">0</td>
-                </tr>
-                <tr class="tr3">
-                    <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
-                    <td style="font-size:15px"><a href="${ctx}/post/detail?id=20">你好！</a> </td>
-                    <td align="middle">goodman</td>
-                    <td align="middle">0</td>
+                    <td colspan="4" style="text-align:center;">
+                        <span class="gray">该板块暂时没有帖子，欢迎率先发帖~</span>
+                    </td>
                 </tr>
             </c:otherwise>
         </c:choose>

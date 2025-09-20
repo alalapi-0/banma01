@@ -56,7 +56,20 @@ public class AuthServlet extends HttpServlet {
                     req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
                     return;
                 }
-                User user = userDao.createUser(u, p);
+                String gender = req.getParameter("gender");
+                if (gender == null || gender.trim().isEmpty()) {
+                    gender = "保密";
+                }
+                String avatar = req.getParameter("avatar");
+                if (avatar == null || avatar.trim().isEmpty()) {
+                    avatar = "1.gif";
+                }
+                User user = userDao.createUser(u, p, gender, avatar);
+                if (user == null) {
+                    req.setAttribute("msg", "注册失败，请稍后重试");
+                    req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
+                    return;
+                }
                 req.getSession(true).setAttribute("user", user);
                 resp.sendRedirect(req.getContextPath() + "/");
             } else {

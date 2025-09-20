@@ -27,17 +27,18 @@ public class PostDao {
         }
     }
 
-    /** 列表：含作者与回复数，时间倒序 */
-    public List<Map<String,Object>> list(int offset, int pageSize) throws SQLException {
+    /** 列表：按板块筛选，含作者与回复数，时间倒序 */
+    public List<Map<String,Object>> listByBoard(int boardId, int offset, int pageSize) throws SQLException {
         String sql = "SELECT t.tid, t.title, t.createTime, u.username AS author, " +
                 "(SELECT COUNT(*) FROM huifu h WHERE h.tid=t.tid) AS replyCount " +
                 "FROM tiezi t JOIN users u ON u.uid=t.uid " +
-                "ORDER BY t.createTime DESC LIMIT ?,?";
+                "WHERE t.bid=? ORDER BY t.createTime DESC LIMIT ?,?";
         List<Map<String,Object>> res = new ArrayList<>();
         try (Connection c = DB.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setInt(1, offset);
-            ps.setInt(2, pageSize);
+            ps.setInt(1, boardId);
+            ps.setInt(2, offset);
+            ps.setInt(3, pageSize);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Map<String,Object> m = new HashMap<>();
@@ -56,7 +57,7 @@ public class PostDao {
     /** 详情：含作者名、作者ID、板块名 */
     public Map<String,Object> findDetail(int tid) throws SQLException {
         String sql = "SELECT t.tid, t.title, t.content, t.createTime, t.uid, " +
-                "u.username AS author, b.name AS boardName " +
+                "u.username AS author, u.headimage AS authorAvatar, b.name AS boardName, b.bid AS boardId " +
                 "FROM tiezi t JOIN users u ON u.uid=t.uid " +
                 "JOIN bankuai b ON b.bid=t.bid WHERE t.tid=?";
         try (Connection c = DB.getConnection();
@@ -71,15 +72,18 @@ public class PostDao {
                 m.put("createTime", rs.getTimestamp("createTime"));
                 m.put("authorId", rs.getInt("uid"));
                 m.put("author", rs.getString("author"));
+                String avatar = rs.getString("authorAvatar");
+                m.put("authorAvatar", avatar != null ? avatar : "1.gif");
                 m.put("boardName", rs.getString("boardName"));
+                m.put("boardId", rs.getInt("boardId"));
                 return m;
             }
         }
     }
 
-    /** 只有作者本人可删；外键级联会清理回复 */
+    /** 只有作者本人可删；同时清理帖子下的回复 */
     public boolean deleteByAuthor(int tid, int authorUid) throws SQLException {
-        String sql = "DELETE FROM tiezi WHERE tid=? AND uid=?";
+        String sql = "DELETE t, h FROM tiezi t LEFT JOIN huifu h ON h.tid=t.tid WHERE t.tid=? AND t.uid=?";
         try (Connection c = DB.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setInt(1, tid);
