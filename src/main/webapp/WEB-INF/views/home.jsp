@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="${ctx}/assets/css/style.css">
 </head>
 <body>
-<%@ include file="/WEB-INF/views/_inc/header.jspf" %>
+<%@ include file="/WEB-INF/views/_inc/header.jsp" %>
 <div class="t">
     <table cellSpacing="0" cellPadding="0" width="100%">
         <tbody>
@@ -198,6 +198,6 @@
         </tbody>
     </table>
 </div>
-<%@ include file="/WEB-INF/views/_inc/footer.jspf" %>
+<%@ include file="/WEB-INF/views/_inc/footer.jsp" %>
 </body>
 </html>

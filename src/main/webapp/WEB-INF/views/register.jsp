@@ -26,7 +26,7 @@
     </script>
 </head>
 <body>
-<%@ include file="/WEB-INF/views/_inc/header.jspf" %>
+<%@ include file="/WEB-INF/views/_inc/header.jsp" %>
 <div class="nav">&gt;&gt;<b><a href="${ctx}/">论坛首页</a></b></div>
 <c:if test="${not empty msg}">
     <div class="notice">${msg}</div>
@@ -49,6 +49,6 @@
         <input class="btn" tabindex="4" value="注 册" type="submit">
     </form>
 </div>
-<%@ include file="/WEB-INF/views/_inc/footer.jspf" %>
+<%@ include file="/WEB-INF/views/_inc/footer.jsp" %>
 </body>
 </html>

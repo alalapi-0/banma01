@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="${ctx}/assets/css/style.css">
 </head>
 <body>
-<%@ include file="/WEB-INF/views/_inc/header.jspf" %>
+<%@ include file="/WEB-INF/views/_inc/header.jsp" %>
 <div style="width:960px;margin:20px auto;">
     <h3>确认删除</h3>
     <p>确定要删除帖子：<strong>${post.title}</strong> ？该操作不可恢复。</p>
@@ -19,6 +19,6 @@
         <a class="btn" href="${ctx}/post/detail?id=${post.tid}">取消</a>
     </form>
 </div>
-<%@ include file="/WEB-INF/views/_inc/footer.jspf" %>
+<%@ include file="/WEB-INF/views/_inc/footer.jsp" %>
 </body>
 </html>

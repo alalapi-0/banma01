@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="${ctx}/assets/css/style.css">
 </head>
 <body>
-<%@ include file="/WEB-INF/views/_inc/header.jspf" %>
+<%@ include file="/WEB-INF/views/_inc/header.jsp" %>
 <div class="nav">&gt;&gt;<b><a href="${ctx}/">论坛首页</a></b>&gt;&gt; <b>帖子列表</b></div>
 <div class="list-actions">
     <c:if test="${not empty sessionScope.user}">
@@ -177,6 +177,6 @@
         </tbody>
     </table>
 </div>
-<%@ include file="/WEB-INF/views/_inc/footer.jspf" %>
+<%@ include file="/WEB-INF/views/_inc/footer.jsp" %>
 </body>
 </html>

@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="${ctx}/assets/css/style.css">
 </head>
 <body>
-<%@ include file="/WEB-INF/views/_inc/header.jspf" %>
+<%@ include file="/WEB-INF/views/_inc/header.jsp" %>
 <div class="nav">&gt;&gt;<b><a href="${ctx}/">论坛首页</a></b>&gt;&gt; <b>${post.boardName}</b></div>
 <div class="list-actions">
     <a href="#reply-form"><img src="${ctx}/assets/images/reply.gif" alt="回复"></a>
@@ -71,6 +71,6 @@
         </form>
     </div>
 </c:if>
-<%@ include file="/WEB-INF/views/_inc/footer.jspf" %>
+<%@ include file="/WEB-INF/views/_inc/footer.jsp" %>
 </body>
 </html>
