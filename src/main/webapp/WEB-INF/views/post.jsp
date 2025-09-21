@@ -1,14 +1,22 @@
+<%-- 设置页面编码 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%-- 引入 JSTL 核心标签 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%-- 计算上下文路径供后续使用 --%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
+<%-- 取出已经在请求范围内准备好的默认板块 --%>
 <c:set var="selectedBoard" value="${requestScope.selectedBoard}" />
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
 <html>
 <head>
+    <!-- 页面标题 -->
     <title>斑马学员论坛--发布帖子</title>
+    <!-- 明确声明内容类型 -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- 引入通用样式 -->
     <link rel="stylesheet" type="text/css" href="${ctx}/assets/css/style.css">
     <script type="text/javascript">
+        // 表单提交前的简单前端校验
         function check(){
             if(!document.postForm.bid || document.postForm.bid.value === "") {
                 alert("请选择板块");
@@ -31,9 +39,11 @@
     </script>
 </head>
 <body>
+<%-- 引入统一页头 --%>
 <%@ include file="/WEB-INF/views/_inc/header.jsp" %>
 <div class="nav">&gt;&gt;<b><a href="${ctx}/">论坛首页</a></b></div>
 <div class="nav">&gt;&gt; <b>发表帖子</b>
+    <%-- 如果已经选定了板块，则显示板块名称 --%>
     <c:if test="${not empty selectedBoard}">
         （
         <c:if test="${not empty selectedBoard.parentName}">${selectedBoard.parentName} - </c:if>
@@ -41,6 +51,7 @@
         ）
     </c:if>
 </div>
+<%-- 若存在服务器端校验消息则提示出来 --%>
 <c:if test="${not empty msg}">
     <div class="notice">${msg}</div>
 </c:if>
@@ -89,6 +100,7 @@
         </div>
     </form>
 </div>
+<%-- 引入统一页脚 --%>
 <%@ include file="/WEB-INF/views/_inc/footer.jsp" %>
 </body>
 </html>
