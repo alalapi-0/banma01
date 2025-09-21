@@ -1,24 +1,35 @@
+<%-- 设置页面输出与编译编码，防止中文乱码 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%-- 导入 JSTL 核心标签用于流程控制 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%-- 导入 JSTL fmt 标签用于时间格式化 --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%-- 读取当前应用的上下文路径，供页面拼接链接 --%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
 <html>
 <head>
+    <!-- 页面标题 -->
     <title>欢迎访问斑马学员论坛</title>
+    <!-- 指定页面的内容类型与编码 -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- 引入站点统一的样式文件 -->
     <link rel="stylesheet" type="text/css" href="${ctx}/assets/css/style.css">
 </head>
 <body>
+<%-- 引入通用页头 --%>
 <%@ include file="/WEB-INF/views/_inc/header.jsp" %>
 <div class="t">
+    <!-- 整个板块列表使用一个表格呈现 -->
     <table cellSpacing="0" cellPadding="0" width="100%">
         <tbody>
+        <!-- 表头行显示列名称 -->
         <tr class="tr2" align="middle">
             <td colSpan="2">论坛</td>
             <td style="width:5%">主题</td>
             <td style="width:25%">最后发表</td>
         </tr>
+        <%-- 如果数据库连接失败则提示错误信息 --%>
         <c:if test="${dbError}">
             <tr class="tr3">
                 <td colspan="4" style="text-align:center;">
@@ -26,16 +37,18 @@
                 </td>
             </tr>
         </c:if>
-        <!-- .NET 技术 -->
+        <%-- 渲染 .NET 技术板块，如果有实时数据 --%>
         <c:choose>
             <c:when test="${not empty netBoards}">
                 <tr class="tr3"><td colSpan="4">.NET技术</td></tr>
+                <%-- 遍历服务器返回的每一个 .NET 子板块 --%>
                 <c:forEach var="b" items="${netBoards}">
                     <tr class="tr3">
                         <td width="5%">&nbsp;</td>
                         <th align="left"><img src="${ctx}/assets/images/board.gif" alt=""> <a href="${ctx}/post/list?bid=${b.id}">${b.name}</a></th>
                         <td align="middle">${b.topicCount}</td>
                         <th>
+                            <%-- 展示最近的帖子，如果有数据 --%>
                             <c:choose>
                                 <c:when test="${not empty b.lastPostId}">
                                     <span><a href="${ctx}/post/detail?id=${b.lastPostId}">${b.lastPostTitle}</a></span><br>
@@ -53,6 +66,7 @@
                 </c:forEach>
             </c:when>
             <c:otherwise>
+                <%-- 如果没有数据库数据且也没有错误，展示静态示例内容 --%>
                 <c:if test="${not dbError}">
                     <tr class="tr3"><td colSpan="4">.NET技术</td></tr>
                     <tr class="tr3">
@@ -83,7 +97,7 @@
             </c:otherwise>
         </c:choose>
 
-        <!-- Java 技术 -->
+        <%-- 渲染 Java 技术板块，逻辑同上 --%>
         <c:choose>
             <c:when test="${not empty javaBoards}">
                 <tr class="tr3"><td colSpan="4">Java技术</td></tr>
@@ -128,7 +142,7 @@
             </c:otherwise>
         </c:choose>
 
-        <!-- 数据库技术 -->
+        <%-- 渲染数据库技术板块 --%>
         <c:choose>
             <c:when test="${not empty dbBoards}">
                 <tr class="tr3"><td colSpan="4">数据库技术</td></tr>
@@ -156,7 +170,7 @@
             </c:when>
             <c:otherwise>
                 <c:if test="${not dbError}">
-                    <tr class="tr3"><td colSpan="4">数据库技术</td></tr>
+                    <tr class="tr3"><td colSpan="4">数据技术</td></tr>
                     <tr class="tr3">
                         <td width="5%">&nbsp;</td>
                         <th align="left"><img src="${ctx}/assets/images/board.gif" alt=""> <a href="${ctx}/post/list?boardId=12">SQL Server基础</a></th>
@@ -173,7 +187,7 @@
             </c:otherwise>
         </c:choose>
 
-        <!-- 娱乐 -->
+        <%-- 渲染娱乐板块 --%>
         <c:choose>
             <c:when test="${not empty funBoards}">
                 <tr class="tr3"><td colSpan="4">娱乐</td></tr>
@@ -204,9 +218,9 @@
                     <tr class="tr3"><td colSpan="4">娱乐</td></tr>
                     <tr class="tr3">
                         <td width="5%">&nbsp;</td>
-                        <th align="left"><img src="${ctx}/assets/images/board.gif" alt=""> <a href="${ctx}/post/list?boardId=15">灌水乐园</a></th>
-                        <td align="middle">25</td>
-                        <th><span><a href="${ctx}/post/detail?id=113">你好</a></span><br><span>accp</span> <span class="gray">[ 2007-09-27 15:09 ]</span></th>
+                        <th align="left"><img src="${ctx}/assets/images/board.gif" alt=""> <a href="${ctx}/post/list?boardId=15">影视音乐</a></th>
+                        <td align="middle">5</td>
+                        <th><span><a href="${ctx}/post/detail?id=108">最近上映的电影推荐</a></span><br><span>aptech</span> <span class="gray">[ 2007-08-09 11:20 ]</span></th>
                     </tr>
                 </c:if>
             </c:otherwise>
@@ -214,6 +228,7 @@
         </tbody>
     </table>
 </div>
+<%-- 引入通用页脚 --%>
 <%@ include file="/WEB-INF/views/_inc/footer.jsp" %>
 </body>
 </html>
