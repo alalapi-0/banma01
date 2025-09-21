@@ -7,7 +7,9 @@
 
 <!-- 顶部 Logo -->
 <div class="logo-bar">
-    <img src="${ctx}/assets/images/logo.png" width="123" height="45" alt="斑马学员论坛">
+    <a href="${ctx}/home">
+        <img src="${ctx}/assets/images/logo.png" width="123" height="45" alt="斑马学员论坛">
+    </a>
 </div>
 
 <!-- 登录/注册/登出状态条 -->
