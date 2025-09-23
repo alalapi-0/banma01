@@ -1,5 +1,6 @@
-<!-- 声明 web.xml 使用的 XML 声明以及编码 -->
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 声明 web.xml 使用的 XML 声明以及编码 -->
+
 <!-- web-app 根元素描述整个 Web 应用的部署信息 -->
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
