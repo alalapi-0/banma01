@@ -25,7 +25,7 @@ public class PostServlet extends HttpServlet {
         Integer currentBoardId = null; // 预留变量保存当前板块 ID
         Map<String, Object> currentBoard = null; // 预留变量保存当前板块信息
 
-        try {
+        try { // 根据不同的路径处理不同的页面展示场景
             if ("/new".equals(path)) { // 请求发帖页
                 prepareBoardForm(req, extractBoardId(req)); // 准备板块列表与默认选项
                 req.getRequestDispatcher("/WEB-INF/views/post.jsp").forward(req, resp); // 转发到发帖 JSP
@@ -111,7 +111,7 @@ public class PostServlet extends HttpServlet {
         User current = session != null ? (User) session.getAttribute("user") : null; // 从会话取出用户
         if (current == null) { resp.sendRedirect(req.getContextPath()+"/auth/login"); return; } // 未登录则跳转登录
 
-        try {
+        try { // 根据子路径执行创建或删除逻辑
             if ("/create".equals(path)) { // 处理创建帖子
                 String title = trim(req.getParameter("title")); // 读取并去除标题两端空格
                 String content = trim(req.getParameter("content")); // 读取并去除内容两端空格

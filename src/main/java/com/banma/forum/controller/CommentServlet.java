@@ -19,7 +19,7 @@ public class CommentServlet extends HttpServlet {
         User u = session != null ? (User) session.getAttribute("user") : null; // 从会话中读取当前用户
         if (u == null) { resp.sendRedirect(req.getContextPath()+"/auth/login"); return; } // 未登录则重定向到登录页
         String path = req.getPathInfo(); // 获取操作路径，例如 /add
-        try {
+        try { // 依据子路径执行新增或删除回复逻辑
             if ("/add".equals(path)) { // 处理新增回复
                 int postId = Integer.parseInt(req.getParameter("postId")); // 解析帖子 ID
                 String content = req.getParameter("content"); // 读取回复内容

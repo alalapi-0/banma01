@@ -32,7 +32,7 @@ public class AuthServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         String action = req.getPathInfo(); // 获取请求的子路径判断操作类型
-        try {
+        try { // 依据 action 分支执行登录或注册逻辑
             if ("/login".equals(action)) { // 处理登录
                 String u = req.getParameter("username"); // 读取用户名
                 String p = req.getParameter("password"); // 读取密码
