@@ -25,7 +25,7 @@ public class EnvironmentCheckApplication {
     private static final String NETWORK_TEST_URL = "https://www.baidu.com";
 
     public static void main(String[] args) {
-        List<CheckResult> results = new ArrayList<>(); // 存放所有检测结果
+        List<CheckResult> results = new ArrayList<>(); // 存放所有检测结果的列表
 
         // 逐项执行检测任务
         results.add(checkJavaVersion(REQUIRED_JAVA_VERSION));
@@ -35,12 +35,12 @@ public class EnvironmentCheckApplication {
         results.add(checkCommandVersion("Maven 构建工具", REQUIRED_MAVEN_VERSION, "mvn", "-version"));
         results.add(checkJdbcDriver("com.mysql.cj.jdbc.Driver"));
 
-        printReport(results); // 将检测结果输出为报告
+        printReport(results); // 将检测结果输出为报告，方便人工检查
 
         // 若存在失败项，返回非 0 状态码，便于脚本集成
-        boolean hasFailure = results.stream().anyMatch(r -> r.status == Status.FAIL);
-        if (hasFailure) {
-            System.exit(1);
+        boolean hasFailure = results.stream().anyMatch(r -> r.status == Status.FAIL); // 判断是否存在失败项
+        if (hasFailure) { // 如果存在失败项
+            System.exit(1); // 以非零状态码退出，便于脚本识别错误
         }
     }
 
@@ -65,40 +65,40 @@ public class EnvironmentCheckApplication {
      */
     private static CheckResult checkCommandVersion(String displayName, String minimumVersion, String... command) {
         ProcessBuilder pb = new ProcessBuilder(command); // 构建执行命令
-        pb.redirectErrorStream(true); // 合并标准输出和错误输出
+        pb.redirectErrorStream(true); // 合并标准输出和错误输出，方便统一读取
         try {
             Process process = pb.start(); // 启动命令
-            StringBuilder output = new StringBuilder();
+            StringBuilder output = new StringBuilder(); // 用于缓存命令输出
             try (BufferedReader reader = new BufferedReader(
                     new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
                 String line;
-                while ((line = reader.readLine()) != null) {
+                while ((line = reader.readLine()) != null) { // 逐行读取命令输出
                     output.append(line).append('\n'); // 读取全部输出
                 }
             }
             int exitCode = process.waitFor(); // 等待命令执行完成
-            if (exitCode != 0) {
+            if (exitCode != 0) { // 非零退出码代表执行失败
                 return new CheckResult(displayName, Status.FAIL,
                         String.format("执行 %s 失败，退出码 %d，输出：%s",
                                 command[0], exitCode, output.toString().trim()));
             }
             String version = parseVersionFromOutput(output.toString());
-            if (version == null) {
+            if (version == null) { // 没有解析到版本号
                 return new CheckResult(displayName, Status.WARN,
                         String.format("命令输出无法解析版本号：%s", output.toString().trim()));
             }
-            if (minimumVersion == null || isVersionAtLeast(version, minimumVersion)) {
+            if (minimumVersion == null || isVersionAtLeast(version, minimumVersion)) { // 未设置最低版本或满足要求
                 return new CheckResult(displayName, Status.PASS,
                         String.format("检测到版本 %s，满足最低要求 %s", version,
                                 minimumVersion == null ? "(未设置)" : minimumVersion));
             }
-            return new CheckResult(displayName, Status.FAIL,
+            return new CheckResult(displayName, Status.FAIL, // 版本过低，提示升级
                     String.format("检测到版本 %s 低于最低要求 %s，请升级", version, minimumVersion));
-        } catch (IOException e) {
+        } catch (IOException e) { // 命令不存在或执行失败
             return new CheckResult(displayName, Status.FAIL,
                     String.format("未找到命令 %s，请确认已正确安装：%s",
                             command.length > 0 ? command[0] : displayName, e.getMessage()));
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e) { // 当前线程被中断
             Thread.currentThread().interrupt(); // 重新标记中断状态
             return new CheckResult(displayName, Status.FAIL, "检测过程中被中断，请重新执行");
         }
@@ -109,19 +109,19 @@ public class EnvironmentCheckApplication {
      */
     private static CheckResult checkNetworkConnectivity(String targetUrl) {
         try {
-            HttpURLConnection connection = (HttpURLConnection) new URL(targetUrl).openConnection();
+            HttpURLConnection connection = (HttpURLConnection) new URL(targetUrl).openConnection(); // 构造连接对象
             connection.setConnectTimeout(5000); // 最长等待 5 秒建立连接
             connection.setReadTimeout(5000); // 最长等待 5 秒读取响应
             connection.setRequestMethod("GET");
             connection.connect();
             int code = connection.getResponseCode(); // 获取 HTTP 状态码
-            if (code >= 200 && code < 400) {
+            if (code >= 200 && code < 400) { // 200-399 视为访问成功
                 return new CheckResult("网络连通性", Status.PASS,
                         String.format("成功访问 %s，HTTP 状态码 %d", targetUrl, code));
             }
             return new CheckResult("网络连通性", Status.FAIL,
                     String.format("访问 %s 返回异常状态码 %d", targetUrl, code));
-        } catch (IOException e) {
+        } catch (IOException e) { // 发生异常通常是网络不可达或 DNS 失败
             return new CheckResult("网络连通性", Status.FAIL,
                     String.format("无法访问 %s：%s", targetUrl, e.getMessage()));
         }
@@ -132,16 +132,16 @@ public class EnvironmentCheckApplication {
      */
     private static CheckResult checkEnvironmentVariable(String name) {
         String value = System.getenv(name); // 读取环境变量
-        if (value == null || value.trim().isEmpty()) {
+        if (value == null || value.trim().isEmpty()) { // 没有配置该环境变量
             return new CheckResult(name + " 环境变量", Status.WARN,
                     "未设置该环境变量，建议配置以保证工具链正常工作");
         }
-        File path = new File(value);
-        if (path.exists()) {
+        File path = new File(value); // 将变量值转成文件路径
+        if (path.exists()) { // 路径存在
             return new CheckResult(name + " 环境变量", Status.PASS,
                     String.format("已设置为 %s，路径存在", value));
         }
-        return new CheckResult(name + " 环境变量", Status.WARN,
+        return new CheckResult(name + " 环境变量", Status.WARN, // 路径不存在，提醒检查
                 String.format("已设置为 %s，但路径不存在，请检查", value));
     }
 
@@ -163,65 +163,65 @@ public class EnvironmentCheckApplication {
      * 打印检测报告，格式化输出每一项的状态与说明。
      */
     private static void printReport(List<CheckResult> results) {
-        System.out.println("================ 项目环境自检报告 ================");
-        for (CheckResult result : results) {
-            System.out.printf("[%s] %-10s %s%n", result.status.symbol, result.name, result.message);
+        System.out.println("================ 项目环境自检报告 ================"); // 输出报告标题
+        for (CheckResult result : results) { // 逐项打印检测结果
+            System.out.printf("[%s] %-10s %s%n", result.status.symbol, result.name, result.message); // 统一的输出格式
         }
-        System.out.println("================================================");
+        System.out.println("================================================"); // 输出结尾分隔线
     }
 
     /**
      * 判断实际版本号是否不低于要求版本号。
      */
     private static boolean isVersionAtLeast(String actual, String required) {
-        int[] actualParts = parseVersionParts(actual);
-        int[] requiredParts = parseVersionParts(required);
-        int maxLength = Math.max(actualParts.length, requiredParts.length);
-        for (int i = 0; i < maxLength; i++) {
-            int a = i < actualParts.length ? actualParts[i] : 0;
+        int[] actualParts = parseVersionParts(actual); // 解析实际版本号
+        int[] requiredParts = parseVersionParts(required); // 解析最低要求版本号
+        int maxLength = Math.max(actualParts.length, requiredParts.length); // 取最长的长度，避免数组越界
+        for (int i = 0; i < maxLength; i++) { // 按位比较大小
+            int a = i < actualParts.length ? actualParts[i] : 0; // 若没有对应位则视为 0
             int b = i < requiredParts.length ? requiredParts[i] : 0;
-            if (a > b) {
+            if (a > b) { // 实际版本更高
                 return true;
             }
-            if (a < b) {
+            if (a < b) { // 实际版本更低
                 return false;
             }
         }
-        return true; // 所有对应位都相等
+        return true; // 所有位都相等，代表满足要求
     }
 
     /**
      * 将版本号拆分成整数数组，便于比较。
      */
     private static int[] parseVersionParts(String version) {
-        String[] tokens = version.split("[^0-9]+");
-        List<Integer> parts = new ArrayList<>();
-        for (String token : tokens) {
-            if (!token.isEmpty()) {
+        String[] tokens = version.split("[^0-9]+"); // 以非数字字符作为分隔符
+        List<Integer> parts = new ArrayList<>(); // 保存解析出的数字
+        for (String token : tokens) { // 遍历每个分段
+            if (!token.isEmpty()) { // 忽略空字符串
                 try {
-                    parts.add(Integer.parseInt(token));
+                    parts.add(Integer.parseInt(token)); // 转换成整数
                 } catch (NumberFormatException ignored) {
                     // 忽略无法转换的片段
                 }
             }
         }
-        int[] result = new int[parts.size()];
+        int[] result = new int[parts.size()]; // 将列表转换成数组
         for (int i = 0; i < parts.size(); i++) {
             result[i] = parts.get(i);
         }
-        return result;
+        return result; // 返回数组形式的版本号
     }
 
     /**
      * 从命令输出中提取第一个看起来像版本号的字段。
      */
     private static String parseVersionFromOutput(String output) {
-        Pattern pattern = Pattern.compile("(\\d+(?:\\.\\d+)+)");
-        Matcher matcher = pattern.matcher(output);
-        if (matcher.find()) {
+        Pattern pattern = Pattern.compile("(\\d+(?:\\.\\d+)+)"); // 匹配形如 1.2.3 的版本号
+        Matcher matcher = pattern.matcher(output); // 在命令输出中查找
+        if (matcher.find()) { // 找到第一个符合的字段
             return matcher.group(1);
         }
-        return null;
+        return null; // 未找到版本号时返回 null
     }
 
     /**

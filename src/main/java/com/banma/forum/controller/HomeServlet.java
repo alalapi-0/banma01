@@ -15,7 +15,7 @@ public class HomeServlet extends HttpServlet {
     @Override // 覆写 doGet 响应首页请求
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        try {
+        try { // 从数据库加载各类板块的统计信息
             req.setAttribute("netBoards", boardDao.listChildrenWithStats(1)); // 读取 .NET 板块信息
             req.setAttribute("javaBoards", boardDao.listChildrenWithStats(6)); // 读取 Java 板块信息
             req.setAttribute("dbBoards", boardDao.listChildrenWithStats(11)); // 读取数据库板块信息
@@ -34,7 +34,7 @@ public class HomeServlet extends HttpServlet {
             }
         }
 
-        req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp); // 转发到 JSP 渲染页面
+        req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp); // 转发到 JSP 渲染页面，用户得以看到首页
     }
 
     // 遍历异常链判断是否由数据库连接问题引起
