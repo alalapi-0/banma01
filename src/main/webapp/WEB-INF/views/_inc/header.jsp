@@ -12,7 +12,7 @@
 <div class="logo-bar">
 
     <a href="${ctx}/home"><%-- 将 logo 包裹在链接中 --%>
-        <img src="${ctx}/assets/images/logo.png" width="123" height="45" alt="斑马学员论坛"><%-- 显示网站 Logo 图片 --%>
+        <img src="<c:url value='/static/img/logo.png'/>" width="123" height="45" alt="斑马学员论坛"><%-- 显示网站 Logo 图片 --%>
 
     </a>
 </div>

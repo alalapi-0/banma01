@@ -259,3 +259,9 @@ button.btn.danger{
 @media (prefers-reduced-motion: reduce){
     *{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
 }
+
+/* ========== 板块卡片基线样式（后台排查使用） ========== */
+.board-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px; }
+.board-card { border:1px solid #ddd; border-radius:6px; padding:12px; background:#fff; }
+.board-card h3 { margin:0 0 8px; font-size:16px; }
+.board-card .meta { color:#666; font-size:12px; }

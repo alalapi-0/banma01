@@ -1,32 +1,93 @@
-package com.banma.forum.dao; // 将数据库帮助类放在 dao 包中
+package com.banma.forum.dao;
 
-import java.sql.*; // 引入 JDBC 相关的接口和实现类
-import java.util.Properties; // 引入 Properties 用于加载外部配置
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-// DB 类负责集中管理数据库连接的创建逻辑
-public class DB {
-    // 保存数据库连接的 URL、用户名、密码和驱动类名
-    private static String URL, USER, PWD, DRIVER;
+public final class DB {
+    private static final Logger log = Logger.getLogger(DB.class.getName());
 
-    // 静态代码块在类第一次被加载时执行，用来初始化数据库配置
+    private static final String URL = System.getProperty("DB_URL",
+        "jdbc:mysql://127.0.0.1:3306/banma_forum?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC");
+    private static final String USER = System.getProperty("DB_USER", "root");
+    private static final String PASS = System.getProperty("DB_PASS", "root");
+
     static {
         try {
-            Properties p = new Properties(); // 创建 Properties 容器
-            // 通过类加载器读取 classpath 下的 jdbc.properties 文件
-            p.load(DB.class.getClassLoader().getResourceAsStream("jdbc.properties"));
-            URL = p.getProperty("jdbc.url"); // 读取数据库连接地址
-            USER = p.getProperty("jdbc.user"); // 读取数据库用户名
-            PWD = p.getProperty("jdbc.password"); // 读取数据库密码
-            DRIVER = p.getProperty("jdbc.driver"); // 读取 JDBC 驱动类名
-            Class.forName(DRIVER); // 显式加载驱动类，确保驱动注册到 DriverManager
-        } catch (Exception e) {
-            // 如果配置文件缺失或驱动加载失败，则抛出运行时异常提醒开发者
-            throw new RuntimeException("加载数据库配置失败", e);
+            Class.forName(System.getProperty("DB_DRIVER", "com.mysql.cj.jdbc.Driver"));
+        } catch (ClassNotFoundException e) {
+            throw new IllegalStateException("JDBC driver not found", e);
         }
     }
 
-    // 对外提供获取数据库连接的方法，调用者记得使用后关闭连接
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PWD); // 使用事先读取的配置创建连接
+    private DB() {
     }
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASS);
+    }
+
+    public static void closeQuietly(AutoCloseable c) {
+        if (c != null) {
+            try {
+                c.close();
+            } catch (Exception e) {
+                log.log(Level.WARNING, "closeQuietly failed", e);
+            }
+        }
+    }
+
+    public static void beginTx(Connection c) throws SQLException {
+        if (c != null) {
+            c.setAutoCommit(false);
+        }
+    }
+
+    public static void commit(Connection c) {
+        if (c != null) {
+            try {
+                c.commit();
+            } catch (SQLException e) {
+                log.log(Level.WARNING, "commit failed", e);
+            }
+        }
+    }
+
+    public static void rollback(Connection c) {
+        if (c != null) {
+            try {
+                c.rollback();
+            } catch (SQLException e) {
+                log.log(Level.WARNING, "rollback failed", e);
+            }
+        }
+    }
+
+    /*
+    // 可选升级：启用 HikariCP 连接池
+    private static final boolean USE_POOL = "on".equalsIgnoreCase(System.getProperty("DB_POOL"));
+    private static final HikariDataSource DS;
+
+    static {
+        if (USE_POOL) {
+            HikariConfig config = new HikariConfig();
+            config.setJdbcUrl(URL);
+            config.setUsername(USER);
+            config.setPassword(PASS);
+            config.setDriverClassName(System.getProperty("DB_DRIVER", "com.mysql.cj.jdbc.Driver"));
+            DS = new HikariDataSource(config);
+        } else {
+            DS = null;
+        }
+    }
+
+    public static Connection getConnection() throws SQLException {
+        if (USE_POOL && DS != null) {
+            return DS.getConnection();
+        }
+        return DriverManager.getConnection(URL, USER, PASS);
+    }
+    */
 }

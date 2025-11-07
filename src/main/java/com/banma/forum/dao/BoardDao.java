@@ -2,9 +2,12 @@ package com.banma.forum.dao; // 指定板块数据访问对象所在包
 
 import java.sql.*; // 引入 JDBC 相关类型
 import java.util.*; // 引入集合类型，方便封装查询结果
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 // BoardDao 负责读取论坛板块的结构和统计信息
 public class BoardDao {
+    private static final Logger log = Logger.getLogger(BoardDao.class.getName());
 
     // 查询某个父板块下子板块的统计信息
     public List<Map<String, Object>> listChildrenWithStats(int parentId) throws SQLException {
@@ -41,6 +44,9 @@ public class BoardDao {
                     res.add(m); // 将当前子板块加入结果集
                 }
             }
+        } catch (SQLException e) {
+            log.log(Level.SEVERE, "listChildrenWithStats failed, parentId=" + parentId, e);
+            throw e;
         }
         return res; // 返回全部子板块信息
     }
@@ -64,6 +70,9 @@ public class BoardDao {
                 board.put("parentName", rs.getString("parentName")); // 写入父板块名称
                 return board; // 返回封装好的结果
             }
+        } catch (SQLException e) {
+            log.log(Level.SEVERE, "findById failed, boardId=" + boardId, e);
+            throw e;
         }
     }
 
@@ -85,6 +94,9 @@ public class BoardDao {
                 board.put("parentName", rs.getString("parentName")); // 写入父板块名称
                 res.add(board); // 将当前板块加入集合
             }
+        } catch (SQLException e) {
+            log.log(Level.SEVERE, "listLeafBoards failed", e);
+            throw e;
         }
         return res; // 返回所有叶子板块信息
     }

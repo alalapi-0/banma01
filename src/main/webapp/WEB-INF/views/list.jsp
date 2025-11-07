@@ -16,9 +16,9 @@
     <!-- 页面标题 -->
     <title>斑马学员论坛--帖子列表</title>
     <!-- 声明内容类型 -->
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
     <!-- 引入通用样式 -->
-    <link rel="stylesheet" type="text/css" href="${ctx}/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/static/css/main.css'/>?v=${pageContext.request.time}">
 </head>
 <body>
 <%-- 引入页头 --%>
@@ -43,10 +43,10 @@
     <c:if test="${not empty sessionScope.user}">
         <c:choose>
             <c:when test="${not empty boardId}">
-                <a href="${ctx}/post/new?bid=${boardId}"><img src="${ctx}/assets/images/post.gif" alt="发表帖子"></a>
+                <a href="${ctx}/post/new?bid=${boardId}"><img src="<c:url value='/static/img/post.gif'/>" alt="发表帖子"></a>
             </c:when>
             <c:otherwise>
-                <a href="${ctx}/post/new"><img src="${ctx}/assets/images/post.gif" alt="发表帖子"></a>
+                <a href="${ctx}/post/new"><img src="<c:url value='/static/img/post.gif'/>" alt="发表帖子"></a>
             </c:otherwise>
         </c:choose>
     </c:if>
@@ -87,7 +87,7 @@
                 <%-- 遍历帖子列表 --%>
                 <c:forEach var="p" items="${posts}">
                     <tr class="tr3">
-                        <td><img src="${ctx}/assets/images/topic.gif" alt=""></td>
+                        <td><img src="<c:url value='/static/img/topic.gif'/>" alt=""></td>
                         <td style="font-size:15px">
                             <a href="${ctx}/post/detail?id=${p.id}">${p.title}</a><br>
                             <span class="gray"><fmt:formatDate value="${p.createTime}" pattern="yyyy-MM-dd HH:mm" /></span>

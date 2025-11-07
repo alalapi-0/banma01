@@ -10,3 +10,4 @@
 
 <%-- 页脚区域显示版权信息 --%>
 <div class="footer gray">2018 Tokyo Banma education Co.,Ltd 版权所有</div>
+<script src="<c:url value='/static/js/app.js'/>"></script>
