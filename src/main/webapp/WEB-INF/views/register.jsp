@@ -12,7 +12,7 @@
     <!-- 指定内容类型 -->
     <meta charset="UTF-8">
     <!-- 引入通用样式 -->
-    <link rel="stylesheet" type="text/css" href="<c:url value='/static/css/main.css'/>?v=${pageContext.request.time}">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/static/css/main.css'/>?v=<%= System.currentTimeMillis() %>">
     <script type="text/javascript">
         // 注册表单的基础校验
         function check() {
