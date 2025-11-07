@@ -1,6 +1,7 @@
 package com.banma.forum.filter; // 声明该过滤器所在的包，方便类被容器扫描到
 
 import javax.servlet.*; // 引入 Filter、ServletRequest、ServletResponse 等接口定义
+import javax.servlet.http.HttpServletRequest; // 引入请求对象具体类型以便读取 URI
 import javax.servlet.http.HttpServletResponse; // 引入响应对象的具体实现类型以便设置响应头
 import java.io.IOException; // 引入 IO 异常类型，过滤器在处理链路时可能抛出
 
@@ -15,6 +16,16 @@ public class EncodingFilter implements Filter {
     @Override // 重写 Filter 接口中的核心方法 doFilter
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
             throws IOException, ServletException {
+
+        if (req instanceof HttpServletRequest) {
+            HttpServletRequest httpReq = (HttpServletRequest) req;
+            String ctx = httpReq.getContextPath();
+            String uri = httpReq.getRequestURI();
+            if (uri != null && uri.startsWith((ctx != null ? ctx : "") + "/static/")) {
+                chain.doFilter(req, resp);
+                return;
+            }
+        }
 
         // 将请求体的编码设置为 UTF-8，确保读取表单时不会乱码
         req.setCharacterEncoding("UTF-8");

@@ -14,9 +14,9 @@
     <!-- 页面标题 -->
     <title>斑马学员论坛--看贴</title>
     <!-- 指定内容类型 -->
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
     <!-- 引入全站样式 -->
-    <link rel="stylesheet" type="text/css" href="${ctx}/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/static/css/main.css'/>?v=${pageContext.request.time}">
 </head>
 <body>
 <%-- 引入通用页头 --%>
@@ -34,14 +34,14 @@
 </div>
 <div class="list-actions">
     <!-- 回复按钮锚点指向页面底部的表单 -->
-    <a href="#reply-form"><img src="${ctx}/assets/images/reply.gif" alt="回复"></a>
+    <a href="#reply-form"><img src="<c:url value='/static/img/reply.gif'/>" alt="回复"></a>
     <%-- 发帖按钮，根据是否知道板块 ID 决定链接 --%>
     <c:choose>
         <c:when test="${not empty boardId}">
-            <a href="${ctx}/post/new?bid=${boardId}"><img src="${ctx}/assets/images/post.gif" alt="发帖"></a>
+            <a href="${ctx}/post/new?bid=${boardId}"><img src="<c:url value='/static/img/post.gif'/>" alt="发帖"></a>
         </c:when>
         <c:otherwise>
-            <a href="${ctx}/post/new"><img src="${ctx}/assets/images/post.gif" alt="发帖"></a>
+            <a href="${ctx}/post/new"><img src="<c:url value='/static/img/post.gif'/>" alt="发帖"></a>
         </c:otherwise>
     </c:choose>
     <%-- 如果当前登录用户是作者，则提供删除链接 --%>
@@ -69,7 +69,7 @@
         <table style="border-top-width:0px;table-layout:fixed" cellSpacing="0" cellPadding="0" width="100%">
             <tbody>
             <tr class="tr1">
-                <th style="width:20%"><b>${post.author}</b><br><img src="${ctx}/assets/images/${postAvatar}" alt="头像"><br>注册:--<br></th>
+                <th style="width:20%"><b>${post.author}</b><br><img src="<c:url value='/static/img/${postAvatar}'/>" alt="头像"><br>注册:--<br></th>
                 <th>
                     <h4>${post.title}</h4>
                     <div><pre><c:out value="${post.content}" /></pre></div>
@@ -87,7 +87,7 @@
             <table style="border-top-width:0px;table-layout:fixed" cellSpacing="0" cellPadding="0" width="100%">
                 <tbody>
                 <tr class="tr1">
-                    <th style="width:20%"><b>${r.author}</b><br><img src="${ctx}/assets/images/${replyAvatar}" alt="头像"><br>注册:--<br></th>
+                    <th style="width:20%"><b>${r.author}</b><br><img src="<c:url value='/static/img/${replyAvatar}'/>" alt="头像"><br>注册:--<br></th>
                     <th>
                         <h4>re：</h4>
                         <div><pre><c:out value="${r.content}" /></pre></div>

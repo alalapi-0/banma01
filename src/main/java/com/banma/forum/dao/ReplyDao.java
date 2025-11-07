@@ -2,9 +2,12 @@ package com.banma.forum.dao; // 指定回复数据访问对象的包位置
 
 import java.sql.*; // 导入 JDBC 相关的接口与类
 import java.util.*; // 导入集合类，方便将结果封装为 Map
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 // ReplyDao 负责处理帖子回复的增删查操作
 public class ReplyDao {
+    private static final Logger log = Logger.getLogger(ReplyDao.class.getName());
 
     // 查询某个帖子下的所有回复，结果包含作者信息
     public List<Map<String,Object>> listByPost(int tid) throws SQLException {
@@ -28,6 +31,9 @@ public class ReplyDao {
                     list.add(m); // 将当前回复加入集合
                 }
             }
+        } catch (SQLException e) {
+            log.log(Level.SEVERE, "listByPost failed, tid=" + tid, e);
+            throw e;
         }
         return list; // 返回全部回复
     }
@@ -44,6 +50,9 @@ public class ReplyDao {
             try (ResultSet rs = ps.getGeneratedKeys()) { // 读取自增主键
                 return rs.next()? rs.getInt(1):0; // 有主键则返回，没有则返回 0
             }
+        } catch (SQLException e) {
+            log.log(Level.SEVERE, "add reply failed, tid=" + tid + ", uid=" + uid, e);
+            throw e;
         }
     }
 
@@ -59,6 +68,9 @@ public class ReplyDao {
                 }
                 return null; // 没有找到则返回 null
             }
+        } catch (SQLException e) {
+            log.log(Level.SEVERE, "findPostId failed, replyId=" + replyId, e);
+            throw e;
         }
     }
 
@@ -70,6 +82,9 @@ public class ReplyDao {
             ps.setInt(1, replyId); // 指定要删除的回复 ID
             ps.setInt(2, ownerUid); // 指定帖子的作者 ID
             return ps.executeUpdate() > 0; // 根据受影响行数判断是否成功
+        } catch (SQLException e) {
+            log.log(Level.SEVERE, "deleteByPostOwner failed, replyId=" + replyId + ", ownerUid=" + ownerUid, e);
+            throw e;
         }
     }
 }

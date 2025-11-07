@@ -12,9 +12,9 @@
     <!-- 页面标题 -->
     <title>欢迎访问斑马学员论坛</title>
     <!-- 指定页面的内容类型与编码 -->
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
     <!-- 引入站点统一的样式文件 -->
-    <link rel="stylesheet" type="text/css" href="${ctx}/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/static/css/main.css'/>?v=${pageContext.request.time}">
 </head>
 <body>
 <%-- 引入通用页头 --%>
@@ -45,7 +45,7 @@
                 <c:forEach var="b" items="${netBoards}">
                     <tr class="tr3">
                         <td width="5%">&nbsp;</td>
-                        <th align="left"><img src="${ctx}/assets/images/board.gif" alt=""> <a href="${ctx}/post/list?bid=${b.id}">${b.name}</a></th>
+                        <th align="left"><img src="<c:url value='/static/img/board.gif'/>" alt=""> <a href="${ctx}/post/list?bid=${b.id}">${b.name}</a></th>
                         <td align="middle">${b.topicCount}</td>
                         <th>
                             <%-- 展示最近的帖子，如果有数据 --%>
@@ -71,25 +71,25 @@
                     <tr class="tr3"><td colSpan="4">.NET技术</td></tr>
                     <tr class="tr3">
                         <td width="5%">&nbsp;</td>
-                        <th align="left"><img src="${ctx}/assets/images/board.gif" alt=""> <a href="${ctx}/post/list?boardId=4">C#语言</a></th>
+                        <th align="left"><img src="<c:url value='/static/img/board.gif'/>" alt=""> <a href="${ctx}/post/list?boardId=4">C#语言</a></th>
                         <td align="middle">30</td>
                         <th><span><a href="${ctx}/post/detail?id=100">c#是微软开发的语言</a></span><br><span>accp</span> <span class="gray">[ 2007-07-30 10:25 ]</span></th>
                     </tr>
                     <tr class="tr3">
                         <td width="5%">&nbsp;</td>
-                        <th align="left"><img src="${ctx}/assets/images/board.gif" alt=""> <a href="${ctx}/post/list?boardId=5">WinForms</a></th>
+                        <th align="left"><img src="<c:url value='/static/img/board.gif'/>" alt=""> <a href="${ctx}/post/list?boardId=5">WinForms</a></th>
                         <td align="middle">7</td>
                         <th><span><a href="${ctx}/post/detail?id=101">谁帮我看看我的程序</a></span><br><span>accp</span> <span class="gray">[ 2007-07-30 10:27 ]</span></th>
                     </tr>
                     <tr class="tr3">
                         <td width="5%">&nbsp;</td>
-                        <th align="left"><img src="${ctx}/assets/images/board.gif" alt=""> <a href="${ctx}/post/list?boardId=6">ADO.NET</a></th>
+                        <th align="left"><img src="<c:url value='/static/img/board.gif'/>" alt=""> <a href="${ctx}/post/list?boardId=6">ADO.NET</a></th>
                         <td align="middle">3</td>
                         <th><span><a href="${ctx}/post/detail?id=94">好</a></span><br><span>goodman</span> <span class="gray">[ 2007-07-30 08:33 ]</span></th>
                     </tr>
                     <tr class="tr3">
                         <td width="5%">&nbsp;</td>
-                        <th align="left"><img src="${ctx}/assets/images/board.gif" alt=""> <a href="${ctx}/post/list?boardId=7">ASP.NET</a></th>
+                        <th align="left"><img src="<c:url value='/static/img/board.gif'/>" alt=""> <a href="${ctx}/post/list?boardId=7">ASP.NET</a></th>
                         <td align="middle">1</td>
                         <th><span><a href="${ctx}/post/detail?id=104">这段代码是什么意思</a></span><br><span>aptech</span> <span class="gray">[ 2007-07-30 10:31 ]</span></th>
                     </tr>
@@ -104,7 +104,7 @@
                 <c:forEach var="b" items="${javaBoards}">
                     <tr class="tr3">
                         <td width="5%">&nbsp;</td>
-                        <th align="left"><img src="${ctx}/assets/images/board.gif" alt=""> <a href="${ctx}/post/list?bid=${b.id}">${b.name}</a></th>
+                        <th align="left"><img src="<c:url value='/static/img/board.gif'/>" alt=""> <a href="${ctx}/post/list?bid=${b.id}">${b.name}</a></th>
                         <td align="middle">${b.topicCount}</td>
                         <th>
                             <c:choose>
@@ -128,13 +128,13 @@
                     <tr class="tr3"><td colSpan="4">Java技术</td></tr>
                     <tr class="tr3">
                         <td width="5%">&nbsp;</td>
-                        <th align="left"><img src="${ctx}/assets/images/board.gif" alt=""> <a href="${ctx}/post/list?boardId=8">Java基础</a></th>
+                        <th align="left"><img src="<c:url value='/static/img/board.gif'/>" alt=""> <a href="${ctx}/post/list?boardId=8">Java基础</a></th>
                         <td align="middle">2</td>
                         <th><span><a href="${ctx}/post/detail?id=102">我是新手，我刚开始学习Java</a></span><br><span>aptech</span> <span class="gray">[ 2007-07-30 10:29 ]</span></th>
                     </tr>
                     <tr class="tr3">
                         <td width="5%">&nbsp;</td>
-                        <th align="left"><img src="${ctx}/assets/images/board.gif" alt=""> <a href="${ctx}/post/list?boardId=9">JSP技术</a></th>
+                        <th align="left"><img src="<c:url value='/static/img/board.gif'/>" alt=""> <a href="${ctx}/post/list?boardId=9">JSP技术</a></th>
                         <td align="middle">6</td>
                         <th><span><a href="${ctx}/post/detail?id=111">你好</a></span><br><span>qq</span> <span class="gray">[ 2007-09-27 14:33 ]</span></th>
                     </tr>
@@ -149,7 +149,7 @@
                 <c:forEach var="b" items="${dbBoards}">
                     <tr class="tr3">
                         <td width="5%">&nbsp;</td>
-                        <th align="left"><img src="${ctx}/assets/images/board.gif" alt=""> <a href="${ctx}/post/list?bid=${b.id}">${b.name}</a></th>
+                        <th align="left"><img src="<c:url value='/static/img/board.gif'/>" alt=""> <a href="${ctx}/post/list?bid=${b.id}">${b.name}</a></th>
                         <td align="middle">${b.topicCount}</td>
                         <th>
                             <c:choose>
@@ -173,13 +173,13 @@
                     <tr class="tr3"><td colSpan="4">数据技术</td></tr>
                     <tr class="tr3">
                         <td width="5%">&nbsp;</td>
-                        <th align="left"><img src="${ctx}/assets/images/board.gif" alt=""> <a href="${ctx}/post/list?boardId=12">SQL Server基础</a></th>
+                        <th align="left"><img src="<c:url value='/static/img/board.gif'/>" alt=""> <a href="${ctx}/post/list?boardId=12">SQL Server基础</a></th>
                         <td align="middle">2</td>
                         <th><span><a href="${ctx}/post/detail?id=103">这段SQL错在哪了?</a></span><br><span>aptech</span> <span class="gray">[ 2007-07-30 10:30 ]</span></th>
                     </tr>
                     <tr class="tr3">
                         <td width="5%">&nbsp;</td>
-                        <th align="left"><img src="${ctx}/assets/images/board.gif" alt=""> <a href="${ctx}/post/list?boardId=13">SQL Server高级</a></th>
+                        <th align="left"><img src="<c:url value='/static/img/board.gif'/>" alt=""> <a href="${ctx}/post/list?boardId=13">SQL Server高级</a></th>
                         <td align="middle">3</td>
                         <th><span><a href="${ctx}/post/detail?id=107">这段sql有什么问题</a></span><br><span>aptech</span> <span class="gray">[ 2007-08-09 10:12 ]</span></th>
                     </tr>
@@ -194,7 +194,7 @@
                 <c:forEach var="b" items="${funBoards}">
                     <tr class="tr3">
                         <td width="5%">&nbsp;</td>
-                        <th align="left"><img src="${ctx}/assets/images/board.gif" alt=""> <a href="${ctx}/post/list?bid=${b.id}">${b.name}</a></th>
+                        <th align="left"><img src="<c:url value='/static/img/board.gif'/>" alt=""> <a href="${ctx}/post/list?bid=${b.id}">${b.name}</a></th>
                         <td align="middle">${b.topicCount}</td>
                         <th>
                             <c:choose>
@@ -218,7 +218,7 @@
                     <tr class="tr3"><td colSpan="4">娱乐</td></tr>
                     <tr class="tr3">
                         <td width="5%">&nbsp;</td>
-                        <th align="left"><img src="${ctx}/assets/images/board.gif" alt=""> <a href="${ctx}/post/list?boardId=15">影视音乐</a></th>
+                        <th align="left"><img src="<c:url value='/static/img/board.gif'/>" alt=""> <a href="${ctx}/post/list?boardId=15">影视音乐</a></th>
                         <td align="middle">5</td>
                         <th><span><a href="${ctx}/post/detail?id=108">最近上映的电影推荐</a></span><br><span>aptech</span> <span class="gray">[ 2007-08-09 11:20 ]</span></th>
                     </tr>

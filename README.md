@@ -186,3 +186,26 @@ mvn -q exec:java -Dexec.mainClass="com.banma.forum.EnvironmentCheckApplication"
 - 将项目迁移到 Spring MVC 或 Spring Boot，对比配置与开发效率的差异。
 
 通过本 README 与源码中的中文注释，你可以从零基础逐步了解 Java Web 论坛的开发流程，祝学习愉快！
+
+## 11. 日志与异常处理规范
+
+- **统一的 `DB` 工具类**：所有 DAO 必须通过 `com.banma.forum.dao.DB#getConnection()` 获取连接，必要时调用 `DB.beginTx/commit/rollback` 管理事务，释放资源使用 try-with-resources 或 `DB.closeQuietly`。
+- **异常记录**：捕获到的 `SQLException` 需要使用 `java.util.logging` 记录，默认的 `logging.properties` 位于 `src/main/resources/logging.properties`，启动时可通过 `-Djava.util.logging.config.file=src/main/resources/logging.properties` 或 `-Djava.util.logging.config.class` 指定配置。
+- **覆盖数据库参数**：默认使用系统属性 `DB_URL`、`DB_USER`、`DB_PASS`，可在启动或 Tomcat 配置中覆盖，例如：
+  ```bash
+  -DDB_URL=jdbc:mysql://127.0.0.1:3306/banma_forum?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC \\
+  -DDB_USER=demo -DDB_PASS=demo123
+  ```
+
+## 12. 样式路径规范与排查
+
+- 所有静态资源统一放在 `src/main/webapp/static/` 下的 `css/`、`js/`、`img/` 目录，并通过 `<c:url>` 生成 URL，避免上下文路径变化导致 404。
+- 过滤器与权限判断需要跳过 `/static/*`，确保未登录状态也能访问样式、脚本与图片。
+- JSP 顶部统一设置 `pageEncoding="UTF-8"` 与 `<meta charset="UTF-8">`，图片、脚本均使用 `<c:url>` 生成路径。
+- 若样式加载异常，可直接访问 `<应用上下文>/static/css/main.css` 检查网络状态并截图反馈。
+
+## 13. 快速自测清单
+
+- 运行 `mvn clean package` 确认项目能够成功编译。
+- 使用示例账号 `accp/123456` 登录并完成发帖、回帖、删帖操作。
+- 若样式异常，请直接访问 `/static/css/main.css` 验证并截图返回。

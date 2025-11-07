@@ -1,0 +1,10 @@
+JDBC usage quick scan
+====================
+prepareStatement occurrences : 13
+executeQuery occurrences     : 8
+executeUpdate occurrences    : 5
+try-with Connection patterns : 13
+
+Manual close hotspots
+---------------------
+(no manual close() calls detected)

@@ -3,16 +3,20 @@ package com.banma.forum.dao; // 指定用户数据访问对象所在的包
 import com.banma.forum.model.User; // 引入用户实体类，方便封装查询结果
 
 import java.sql.*; // 导入 JDBC 相关的接口和类
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 // UserDao 负责读写 users 表中的数据
 public class UserDao {
+    private static final Logger log = Logger.getLogger(UserDao.class.getName());
+
     // 提供一个私有方法统一创建数据库连接
     private Connection getConn() throws SQLException {
         return DB.getConnection(); // 复用 DB 工具类提供的连接方法
     }
 
     // 按用户名查询用户信息，如果不存在则返回 null
-    public User findByName(String username) throws Exception {
+    public User findByName(String username) throws SQLException {
         final String sql = "SELECT uid, username, password, sex, headimage FROM users WHERE username = ?"; // 预定义 SQL
         try (Connection conn = getConn(); // 获取数据库连接
              PreparedStatement ps = conn.prepareStatement(sql)) { // 准备执行语句
@@ -31,11 +35,14 @@ public class UserDao {
                 }
                 return null; // 没有查到记录时返回 null
             }
+        } catch (SQLException e) {
+            log.log(Level.SEVERE, "findByName failed, username=" + username, e);
+            throw e;
         }
     }
 
     // 创建新用户，用于注册场景，成功时返回完整的用户对象
-    public User createUser(String username, String pwd, String gender, String avatar) throws Exception {
+    public User createUser(String username, String pwd, String gender, String avatar) throws SQLException {
         if (gender == null || gender.trim().isEmpty()) { // 如果没有提供性别
             gender = "保密"; // 使用默认值
         }
@@ -65,7 +72,11 @@ public class UserDao {
             }
             return null; // 走到这里说明插入失败或未返回主键
         } catch (SQLIntegrityConstraintViolationException dup) { // 捕获唯一约束异常
+            log.log(Level.INFO, "createUser duplicate username=" + username, dup);
             return null; // 用户名重复时返回 null 表示注册失败
+        } catch (SQLException e) {
+            log.log(Level.SEVERE, "createUser failed, username=" + username, e);
+            throw e;
         }
     }
 }

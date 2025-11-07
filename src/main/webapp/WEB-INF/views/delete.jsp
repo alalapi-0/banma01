@@ -10,9 +10,9 @@
     <!-- 页面标题 -->
     <title>确认删除帖子</title>
     <!-- 指定内容类型 -->
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
     <!-- 引入通用样式 -->
-    <link rel="stylesheet" type="text/css" href="${ctx}/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/static/css/main.css'/>?v=${pageContext.request.time}">
 </head>
 <body>
 <%-- 引入统一页头 --%>

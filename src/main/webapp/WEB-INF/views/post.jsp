@@ -12,9 +12,9 @@
     <!-- 页面标题 -->
     <title>斑马学员论坛--发布帖子</title>
     <!-- 明确声明内容类型 -->
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
     <!-- 引入通用样式 -->
-    <link rel="stylesheet" type="text/css" href="${ctx}/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/static/css/main.css'/>?v=${pageContext.request.time}">
     <script type="text/javascript">
         // 表单提交前的简单前端校验
         function check(){

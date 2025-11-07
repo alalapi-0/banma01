@@ -2,9 +2,12 @@ package com.banma.forum.dao; // 指定 PostDao 的包位置，方便与其他 DA
 
 import java.sql.*; // 导入 JDBC 中增删改查需要用到的核心类
 import java.util.*; // 导入集合工具类，方便用 Map 和 List 封装结果
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 // PostDao 负责处理与帖子相关的数据库操作
 public class PostDao {
+    private static final Logger log = Logger.getLogger(PostDao.class.getName());
 
     // 新增帖子，并返回数据库自动生成的帖子 ID
     public int create(int uid, int bid, String title, String content) throws SQLException {
@@ -19,6 +22,9 @@ public class PostDao {
             try (ResultSet rs = ps.getGeneratedKeys()) { // 读取数据库生成的主键
                 return rs.next() ? rs.getInt(1) : 0; // 如果存在主键则返回，否则返回 0
             }
+        } catch (SQLException e) {
+            log.log(Level.SEVERE, "create post failed, uid=" + uid + ", bid=" + bid, e);
+            throw e;
         }
     }
 
@@ -45,6 +51,9 @@ public class PostDao {
                     res.add(m); // 将当前帖子信息加入结果列表
                 }
             }
+        } catch (SQLException e) {
+            log.log(Level.SEVERE, "listByBoard failed, boardId=" + boardId, e);
+            throw e;
         }
         return res; // 返回封装好的帖子列表
     }
@@ -73,6 +82,9 @@ public class PostDao {
                 m.put("boardId", rs.getInt("boardId")); // 板块 ID
                 return m; // 返回封装好的详情信息
             }
+        } catch (SQLException e) {
+            log.log(Level.SEVERE, "findDetail failed, tid=" + tid, e);
+            throw e;
         }
     }
 
@@ -84,6 +96,9 @@ public class PostDao {
             ps.setInt(1, tid); // 指定要删除的帖子 ID
             ps.setInt(2, authorUid); // 指定必须匹配的作者 ID
             return ps.executeUpdate() > 0; // 执行删除并根据受影响行数判断是否成功
+        } catch (SQLException e) {
+            log.log(Level.SEVERE, "deleteByAuthor failed, tid=" + tid + ", authorUid=" + authorUid, e);
+            throw e;
         }
     }
 }
