@@ -1,28 +1,51 @@
 package com.banma.forum.dao;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public final class DB {
     private static final Logger log = Logger.getLogger(DB.class.getName());
 
+    private static final Properties CONFIG = loadConfig();
     private static final String URL = System.getProperty("DB_URL",
-        "jdbc:mysql://127.0.0.1:3306/banma_forum?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC");
-    private static final String USER = System.getProperty("DB_USER", "root");
-    private static final String PASS = System.getProperty("DB_PASS", "root");
+        CONFIG.getProperty("jdbc.url",
+            "jdbc:mysql://127.0.0.1:3306/banma_forum?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC"));
+    private static final String USER = System.getProperty("DB_USER",
+        CONFIG.getProperty("jdbc.user", "root"));
+    private static final String PASS = System.getProperty("DB_PASS",
+        CONFIG.getProperty("jdbc.password", "root"));
+    private static final String DRIVER = System.getProperty("DB_DRIVER",
+        CONFIG.getProperty("jdbc.driver", "com.mysql.cj.jdbc.Driver"));
 
     static {
         try {
-            Class.forName(System.getProperty("DB_DRIVER", "com.mysql.cj.jdbc.Driver"));
+            Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
             throw new IllegalStateException("JDBC driver not found", e);
         }
     }
 
     private DB() {
+    }
+
+    private static Properties loadConfig() {
+        Properties props = new Properties();
+        try (InputStream in = DB.class.getClassLoader().getResourceAsStream("jdbc.properties")) {
+            if (in != null) {
+                props.load(in);
+            } else {
+                log.fine("jdbc.properties not found on classpath, using defaults");
+            }
+        } catch (IOException e) {
+            log.log(Level.WARNING, "Failed to load jdbc.properties, using defaults", e);
+        }
+        return props;
     }
 
     public static Connection getConnection() throws SQLException {
