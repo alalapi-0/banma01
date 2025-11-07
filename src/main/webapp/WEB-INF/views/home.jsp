@@ -6,6 +6,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%-- 读取当前应用的上下文路径，供页面拼接链接 --%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
+<%-- 如果请求没有带入静态资源版本号，则使用当前会话的最后访问时间兜底 --%>
+<c:if test="${empty assetVersion}">
+    <c:set var="assetVersion" value="${pageContext.session.lastAccessedTime}" />
+</c:if>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
 <html>
 <head>
@@ -13,8 +17,11 @@
     <title>欢迎访问斑马学员论坛</title>
     <!-- 指定页面的内容类型与编码 -->
     <meta charset="UTF-8">
-    <!-- 引入站点统一的样式文件 -->
-    <link rel="stylesheet" type="text/css" href="<c:url value='/static/css/main.css'/>?v=${pageContext.request.time}">
+    <!-- 构建携带版本号的样式文件链接，避免浏览器缓存导致的页面样式异常 -->
+    <c:url value="/static/css/main.css" var="mainCssUrl">
+        <c:param name="v" value="${assetVersion}" />
+    </c:url>
+    <link rel="stylesheet" type="text/css" href="${mainCssUrl}">
 </head>
 <body>
 <%-- 引入通用页头 --%>
