@@ -20,6 +20,7 @@ public class HomeServlet extends HttpServlet {
             req.setAttribute("javaBoards", boardDao.listChildrenWithStats(6)); // 读取 Java 板块信息
             req.setAttribute("dbBoards", boardDao.listChildrenWithStats(11)); // 读取数据库板块信息
             req.setAttribute("funBoards", boardDao.listChildrenWithStats(14)); // 读取兴趣板块信息
+            req.setAttribute("assetVersion", System.currentTimeMillis()); // 提供静态资源版本号，避免缓存导致的样式更新不及时
         } catch (SQLException e) { // 捕获数据库异常
             if (isConnectionFailure(e)) { // 判断是否为连接失败
                 log("数据库连接失败", e); // 记录日志
